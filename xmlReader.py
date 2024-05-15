@@ -65,7 +65,7 @@ def AllServiceAreaReader(ex_name):      # Routename to all service area
     return service_area_list
 
 def serviceAreaLocation(serviceArea_name):
-    
+    pass
 
 def AllExReader(): # all route name
     page_num = '1'
@@ -92,3 +92,13 @@ def ExnameToExcode(ex_name):
     for list in root.iter("list"):
         routeCode = list.findtext("routeCode")
         return routeCode
+
+def serviceAreaNameToServiceAreaCode(serviceArea_name):
+    url = 'https://data.ex.co.kr/openapi/restinfo/restBestfoodList?key='+api_key+'&type=xml&numOfRows=10&pageNo=1&stdRestNm='+serviceArea_name
+    response = requests.get(url)
+    root = ET.fromstring(response.text)
+    flag = root.find("list")
+    for list in root.iter("list"):
+        serviceArea_code = list.findtext("restCd")
+        return serviceArea_code
+
