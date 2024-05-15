@@ -2,7 +2,7 @@ import requests
 import xml.etree.ElementTree as ET
 api_key = '5758303589'
 
-def FoodMenuReader(serviceArea_name):               # return food menu list
+def FoodMenuReader(serviceArea_name):               # serviceArea name and return food menu list
     page_num = '1'
     flag = False
     menu = []
@@ -22,7 +22,7 @@ def FoodMenuReader(serviceArea_name):               # return food menu list
 
 
     pass
-def GasstationReader(serviceArea_name):
+def GasstationReader(serviceArea_name):         #serviceArea to Gasstation company and price
     page_num = '1'
     flag = False
     oil_price = {}
@@ -45,7 +45,7 @@ def GasstationReader(serviceArea_name):
     #print(oil_price)   If you don't know return type, you have to remove comment and check the result
     return oil_price
 
-def AllServiceAreaReader(ex_name):      #
+def AllServiceAreaReader(ex_name):      # Routename to all service area
     ex_code = ExnameToExcode(ex_name)
     page_num = '1'
     flag = False
@@ -62,16 +62,33 @@ def AllServiceAreaReader(ex_name):      #
             service_area_list.append(list.findtext("unitName"))
 
         page_num = str(int(page_num) + 1)
-    print(service_area_list)
     return service_area_list
 
+def serviceAreaLocation(serviceArea_name):
+    
+
+def AllExReader(): # all route name
+    page_num = '1'
+    ex_set = set()
+    while True:
+        url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=10&pageNo='+page_num
+        # url 불러오기
+        response = requests.get(url)
+        root = ET.fromstring(response.text)
+        flag = root.find("list")
+        if flag == None:
+            break
+        for list in root.iter("list"):
+           ex_set.add(list.findtext("routeName"))
+        page_num = str(int(page_num) + 1)
+    print(len(ex_set))
+    pass
+
 def ExnameToExcode(ex_name):
-    url = 'https://data.ex.co.kr/openapi/business/curStateStation?key=test&type=xml&numOfRows=10&pageNo=1&routeName='+ex_name
+    url = 'https://data.ex.co.kr/openapi/business/curStateStation?key='+api_key+'&type=xml&numOfRows=10&pageNo=1&routeName='+ex_name
     response = requests.get(url)
     root = ET.fromstring(response.text)
     flag = root.find("list")
     for list in root.iter("list"):
         routeCode = list.findtext("routeCode")
         return routeCode
-
-AllServiceAreaReader('경부선')
