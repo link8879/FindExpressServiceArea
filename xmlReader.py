@@ -65,7 +65,25 @@ def AllServiceAreaReader(ex_name):      # Routename to all service area
     return service_area_list
 
 def serviceAreaLocation(serviceArea_name):
-    pass
+    #serviceArea_code = serviceAreaNameToServiceAreaCode(serviceArea_name)
+    page_num = '1'
+    while True:
+        url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=10&pageNo='+page_num
+        response = requests.get(url)
+        root = ET.fromstring(response.text)
+        flag = False
+        location = {'x':0,'y':0}
+        for list in root.iter("list"):
+            if serviceArea_name+'휴게소' == list.findtext("unitName"):
+                flag = True
+                location['x'] = list.findtext('xValue')
+                location['y'] = list.findtext('yValue')
+                break
+        if flag:
+            break
+        page_num = str(int(page_num) + 1)
+    print(location)
+    return location
 
 def AllExReader(): # all route name
     page_num = '1'
@@ -101,4 +119,6 @@ def serviceAreaNameToServiceAreaCode(serviceArea_name):
     for list in root.iter("list"):
         serviceArea_code = list.findtext("restCd")
         return serviceArea_code
+
+serviceAreaLocation('서울만남(부산)')
 
