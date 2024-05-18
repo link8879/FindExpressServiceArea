@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.ttk as ttk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
-
+import xmlReader as xmlReader
 class HomePage(Frame):
     def Rest_Area_Info(self):
         # Rest_Area_Information
@@ -17,7 +17,9 @@ class HomePage(Frame):
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
-        Highway_Routes = [str(i) + "번 노선" for i in range(1, 101)]
+        #Highway_Routes = [str(i) + "번 노선" for i in range(1, 101)]
+        Highway_Routes = xmlReader.XmlReader.AllExReader()
+        print(xmlReader.XmlReader.AllExReader())
         ListOfRestAreas = [str(i) + "번 휴게소" for i in range(1, 101)]
 
         # highway route list

@@ -99,11 +99,12 @@ class XmlReader:
             flag = root.find("list")
             if flag == None:
                 break
-            for list in root.iter("list"):
-               ex_set.add(list.findtext("routeName"))
+            for i in root.iter("list"):
+               ex_set.add(i.findtext("routeName"))
             page_num = str(int(page_num) + 1)
-        print(len(ex_set))
-        return ex_set
+
+        ex_list = list(ex_set)
+        return ex_list
 
     @staticmethod
     def ExnameToExcode(ex_name):
