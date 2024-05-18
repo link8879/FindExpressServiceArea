@@ -5,17 +5,22 @@ class OilPage(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
+        self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
+        self.HomeImage = self.HomeImage.subsample(6, 6)
+        self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
+        self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
+
         label = Label(self, text="Oil Page")
         label.place(x=350, y=50)  # 중앙에 배치
 
-        HomeButton = Button(self, text="홈", width=10, height=10, command=lambda:
+        HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
         controller.show_frame("HomePage"))
-        HomeButton.place(x=5, y=0)
+        HomeButton.place(x=10, y=255)
 
-        OilButton = Button(self, text="주유소 가격 비교", width=10, height=10, command=lambda:
+        OilButton = Button(self, image=self.OilImage, width=100, height=100, command=lambda:
         controller.show_frame("OilPage"))
-        OilButton.place(x=5, y=200)
+        OilButton.place(x=10, y=370)
 
-        BookmarkPageButton = Button(self, text="즐겨찾기", width=10, height=10, command=lambda:
+        BookmarkPageButton = Button(self, image=self.BookmarkImage, width=100, height=100, command=lambda:
         controller.show_frame("Bookmark"))
-        BookmarkPageButton.place(x=5, y=400)
+        BookmarkPageButton.place(x=10, y=485)

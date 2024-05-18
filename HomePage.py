@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.ttk as ttk
 from tkinter import PhotoImage
+from PIL import Image, ImageTk
 
 class HomePage(Frame):
     def Rest_Area_Info(self):
@@ -12,7 +13,7 @@ class HomePage(Frame):
         self.controller = controller
 
         self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
-        self.HomeImage = self.HomeImage.subsample(6, 6)
+        # self.HomeImage = self.HomeImage.subsample(6, 6)
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
