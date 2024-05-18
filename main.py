@@ -10,6 +10,7 @@ class MainGUI(Tk):
 
         # window size
         self.geometry("800x600")
+        self.resizable(False, False)
 
         container = Frame(self)
         container.pack(side="top", fill="both", expand=True)
