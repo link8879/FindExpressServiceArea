@@ -3,12 +3,18 @@ import tkinter.ttk as ttk
 from tkinter import PhotoImage
 
 class HomePage(Frame):
+    def Rest_Area_Info(self):
+        # Rest_Area_Information
+        pass
+
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
 
-        self.HomeImage = PhotoImage(file="홈 아이콘.png")
+        self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
         self.HomeImage = self.HomeImage.subsample(6, 6)
+        self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
+        self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
         Highway_Routes = [str(i) + "번 노선" for i in range(1, 101)]
         ListOfRestAreas = [str(i) + "번 휴게소" for i in range(1, 101)]
@@ -22,17 +28,26 @@ class HomePage(Frame):
         RestArea_List = ttk.Combobox(self, width=50, height=10, values=ListOfRestAreas)
         RestArea_List.place(x=285, y=130)
 
-        label = Label(self, text="Home Page")
-        label.place(x=350, y=50)    # 중앙에 배치
+        # button
+        BookmarkButton = Button(self, text="즐겨찾기에 추가")
+        BookmarkButton.place(x=200, y=550)
 
-        HomeButton = Button(self, text="홈", image=self.HomeImage, command=lambda:
+        TelegramButton = Button(self, text="텔레그램에 보내기")
+        TelegramButton.place(x=450, y=550)
+
+        EmailButton = Button(self, text="이메일로 보내기")
+        EmailButton.place(x=650, y=550)
+
+        # page button
+        HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
         controller.show_frame("HomePage"))
-        HomeButton.place(x=5, y=0)
+        HomeButton.place(x=10, y=255)
 
-        OilButton = Button(self, text="주유소 가격 비교", padx=10, pady=10, command=lambda:
+        OilButton = Button(self, image=self.OilImage, width=100, height=100, command=lambda:
         controller.show_frame("OilPage"))
-        OilButton.place(x=5, y=200)
+        OilButton.place(x=10, y=370)
 
-        BookmarkButton = Button(self, text="즐겨찾기", padx=10, pady=10, command=lambda:
+        BookmarkPageButton = Button(self, image=self.BookmarkImage, width=100, height=100, command=lambda:
         controller.show_frame("Bookmark"))
-        BookmarkButton.place(x=5, y=400)
+        BookmarkPageButton.place(x=10, y=485)
+
