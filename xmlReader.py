@@ -20,6 +20,7 @@ class XmlReader:
             for list in root.iter("list"):
                 menu.append(list.findtext("foodNm"))
             page_num = str(int(page_num)+1)
+        print(menu)
         return menu
 
     @staticmethod
@@ -69,15 +70,30 @@ class XmlReader:
         # url 불러오기
         response = requests.get(url)
         root = ET.fromstring(response.text)
-
+        service_Area_info = {'adress':'','parking':0,'up_down':''}
         for list in root.iter("list"):
             if '휴게소' == list.findtext("svarGsstClssNm"):
-                up_down = list.findtext("gudClssNm")
-                service_area_list.append(list.findtext("svarNm") +'('+up_down +')')
+                service_Area_info['up_down'] = list.findtext("gudClssNm")
+
+                service_area_list.append(list.findtext("svarNm"))
 
         service_area_list.sort()
         return service_area_list
+    @staticmethod
+    def serviceAreaInfoReader(serviceArea_name):
+        url = 'https://data.ex.co.kr/openapi/restinfo/hiwaySvarInfoList?key='+api_key+'&type=xml&svarNm='+serviceArea_name
+        # url 불러오기
+        response = requests.get(url)
+        root = ET.fromstring(response.text)
+        service_Area_info = {'address': '', 'small_parking': 0, 'big_parking':0,'up_down': ''}
 
+        for list in root.iter("list"):
+            if '휴게소' == list.findtext("svarGsstClssNm"):
+                service_Area_info['up_down'] = list.findtext("gudClssNm")
+                service_Area_info['address'] = list.findtext("svarAddr")
+                service_Area_info['small_parking'] = int(list.findtext("cocrPrkgTrcn"))
+                service_Area_info['big_parking'] = int(list.findtext("fscarPrkgTrcn"))
+        return service_Area_info
     @staticmethod
     def serviceAreaLocationReader(serviceArea_name):
         #serviceArea_code = serviceAreaNameToServiceAreaCode(serviceArea_name)
@@ -121,6 +137,7 @@ class XmlReader:
         for i in root.iter("list"):
             ex_set.add(i.findtext("routeNm"))
         ex_list = list(ex_set)
+        ex_list.sort()
         return ex_list
 
     @staticmethod

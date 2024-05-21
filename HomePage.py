@@ -53,10 +53,6 @@ class HomePage(Frame):
         BookmarkPageButton.place(x=10, y=485)
 
 
-
-    def Rest_Area_Info(self):
-        # Rest_Area_Information
-        pass
     def ComboBoxSelected(self,event):
         print(xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get()))
         self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())
@@ -64,15 +60,19 @@ class HomePage(Frame):
             self.RestArea_List['values'] = ['휴게소가 존재하지 않습니다']
         else:
             self.RestArea_List['values'] = self.ListOfRestAreas
+
     def SecondComboBoxSelected(self,event):
         # Text Box
-        self.text_box = Text(self, width=30, height=30)
+        self.text_box = Text(self, width=40, height=25)
         self.text_box.place(x=200, y=160)
         self.text_box.delete('1.0',END)
-        food_menu = xml.XmlReader.FoodMenuReader(self.RestArea_List.get())
-        self.text_box.insert('1.0', '음식 메뉴' + '\n')
+        info = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())#adress parking up and down info
+        self.text_box.insert('1.0','★주소★' + '\n')
+        self.text_box.insert('end',info['address']+'\n')
+
+        food_menu = xml.XmlReader.FoodMenuReader(self.RestArea_List.get())  #food info
+        self.text_box.insert('end', '★음식 메뉴★' + '\n')
         for food in food_menu:
-            print(food)
             self.text_box.insert('end', food + '\n')
 
 
