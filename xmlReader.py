@@ -52,18 +52,28 @@ class XmlReader:
         page_num = '1'
         flag = False
         service_area_list = []
-        while True:
-            url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key=' + api_key + '&type=xml&routeNo=' + ex_code + '&numOfRows=99&pageNo='+page_num
-            # url 불러오기
-            response = requests.get(url)
-            root = ET.fromstring(response.text)
-            flag = root.find("list")
-            if flag == None:
-                break
-            for list in root.iter("list"):
-                service_area_list.append(list.findtext("unitName"))
+        # while True:
+        #     url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key=' + api_key + '&type=xml&routeNo=' + ex_code + '&numOfRows=99&pageNo='+page_num
+        #     # url 불러오기
+        #     response = requests.get(url)
+        #     root = ET.fromstring(response.text)
+        #     flag = root.find("list")
+        #     if flag == None:
+        #         break
+        #     for list in root.iter("list"):
+        #         service_area_list.append(list.findtext("unitName"))
+        #
+        #     page_num = str(int(page_num) + 1)
 
-            page_num = str(int(page_num) + 1)
+        url = 'https://data.ex.co.kr/openapi/restinfo/hiwaySvarInfoList?key='+api_key+'&type=xml&routeCd='+ex_code
+        # url 불러오기
+        response = requests.get(url)
+        root = ET.fromstring(response.text)
+
+        for list in root.iter("list"):
+            if '휴게소' == list.findtext("svarGsstClssNm"):
+                service_area_list.append(list.findtext("svarNm"))
+
         return service_area_list
 
     @staticmethod
