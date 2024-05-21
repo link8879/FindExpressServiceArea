@@ -2,12 +2,8 @@ from tkinter import *
 import tkinter.ttk as ttk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
-import xmlReader as xmlReader
+import xmlReader as xml
 class HomePage(Frame):
-    def Rest_Area_Info(self):
-        # Rest_Area_Information
-        pass
-
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -17,19 +13,21 @@ class HomePage(Frame):
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
-        #Highway_Routes = [str(i) + "번 노선" for i in range(1, 101)]
-        Highway_Routes = xmlReader.XmlReader.AllExReader()
-        print(xmlReader.XmlReader.AllExReader())
-        ListOfRestAreas = [str(i) + "번 휴게소" for i in range(1, 101)]
+        self.Highway_Routes = xml.XmlReader.AllExReader()
+        #self.Highway_Routes = [str(i) + "번 휴게소" for i in range(1, 101)]
+        self.ListOfRestAreas = [str(i) + "번 휴게소" for i in range(1, 101)]
 
         # highway route list
         # height = Number of times the list will display
-        Highway_Route_List = ttk.Combobox(self, width=50, height=10, values=Highway_Routes)
-        Highway_Route_List.place(x=285, y=100)
+        self.Highway_Route_List = ttk.Combobox(self, width=50, height=10, values=self.Highway_Routes)
+        self.Highway_Route_List.place(x=285, y=100)
+        self.Highway_Route_List.bind("<<ComboboxSelected>>", self.ComboBoxSelected)
 
         # RestArea list
-        RestArea_List = ttk.Combobox(self, width=50, height=10, values=ListOfRestAreas)
-        RestArea_List.place(x=285, y=130)
+        self.RestArea_List = ttk.Combobox(self, width=50, height=10, values=self.ListOfRestAreas)
+        self.RestArea_List.place(x=285, y=130)
+        self.RestArea_List.bind("<<ComboboxSelected>>",self.SecondComboBoxSelected)
+
 
         # button
         BookmarkButton = Button(self, text="즐겨찾기에 추가")
@@ -53,4 +51,30 @@ class HomePage(Frame):
         BookmarkPageButton = Button(self, image=self.BookmarkImage, width=100, height=100, command=lambda:
         controller.show_frame("Bookmark"))
         BookmarkPageButton.place(x=10, y=485)
+
+
+
+    def Rest_Area_Info(self):
+        # Rest_Area_Information
+        pass
+    def ComboBoxSelected(self,event):
+        print(xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get()))
+        self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())
+        self.RestArea_List['values'] = self.ListOfRestAreas
+    def SecondComboBoxSelected(self,event):
+        # Text Box
+        self.text_box = Text(self, width=30, height=30)
+        self.text_box.place(x=200, y=160)
+        self.text_box.delete('1.0',END)
+        food_menu = xml.XmlReader.FoodMenuReader(self.RestArea_List.get())
+        self.text_box.insert('1.0', '음식 메뉴' + '\n')
+        for food in food_menu:
+            print(food)
+            self.text_box.insert('end', food + '\n')
+
+
+
+
+
+
 
