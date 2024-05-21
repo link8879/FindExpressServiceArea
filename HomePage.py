@@ -3,6 +3,7 @@ import tkinter.ttk as ttk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
 import xmlReader as xml
+from tkintermapview import TkinterMapView
 class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -53,6 +54,7 @@ class HomePage(Frame):
         BookmarkPageButton.place(x=10, y=485)
 
 
+
     def ComboBoxSelected(self,event):
         print(xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get()))
         self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())
@@ -66,6 +68,7 @@ class HomePage(Frame):
         self.text_box = Text(self, width=40, height=25)
         self.text_box.place(x=200, y=160)
         self.text_box.delete('1.0',END)
+
         info = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())#adress parking up and down info
         self.text_box.insert('1.0','★주소★' + '\n')
         self.text_box.insert('end',info['address']+'\n')
@@ -74,6 +77,23 @@ class HomePage(Frame):
         self.text_box.insert('end', '★음식 메뉴★' + '\n')
         for food in food_menu:
             self.text_box.insert('end', food + '\n')
+
+        #parking info
+
+        # map
+        self.map_widget = TkinterMapView(width=800, height=500, corner_radius=0)
+
+        address = '대전광역시 유성구 지족로 362'
+        print(address)
+        marker = self.map_widget.set_address(str(address))
+        print(marker)
+        self.map_widget.set_zoom(15)
+
+        self.map_widget.place(x=400, y=160)
+
+
+
+
 
 
 
