@@ -72,8 +72,10 @@ class XmlReader:
 
         for list in root.iter("list"):
             if '휴게소' == list.findtext("svarGsstClssNm"):
-                service_area_list.append(list.findtext("svarNm"))
+                up_down = list.findtext("gudClssNm")
+                service_area_list.append(list.findtext("svarNm") +'('+up_down +')')
 
+        service_area_list.sort()
         return service_area_list
 
     @staticmethod
