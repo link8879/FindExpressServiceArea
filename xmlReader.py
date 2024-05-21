@@ -9,7 +9,7 @@ class XmlReader:
         flag = False
         menu = []
         while True:
-            url = 'https://data.ex.co.kr/openapi/restinfo/restBestfoodList?key=test&type=xml&numOfRows=10&pageNo='+page_num+'&stdRestNm='+serviceArea_name
+            url = 'https://data.ex.co.kr/openapi/restinfo/restBestfoodList?key=test&type=xml&numOfRows=99&pageNo='+page_num+'&stdRestNm='+serviceArea_name
         # url 불러오기
             response = requests.get(url)
             root = ET.fromstring(response.text)
@@ -28,7 +28,7 @@ class XmlReader:
         flag = False
         oil_price = {}
         while True:
-            url = 'https://data.ex.co.kr/openapi/business/curStateStation?key=test&type=xml&numOfRows=10&pageNo='+page_num+'&serviceAreaName='+serviceArea_name
+            url = 'https://data.ex.co.kr/openapi/business/curStateStation?key=test&type=xml&numOfRows=99&pageNo='+page_num+'&serviceAreaName='+serviceArea_name
             # url 불러오기
             response = requests.get(url)
             root = ET.fromstring(response.text)
@@ -53,7 +53,7 @@ class XmlReader:
         flag = False
         service_area_list = []
         while True:
-            url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key=' + api_key + '&type=xml&routeNo=' + ex_code + '&numOfRows=10&pageNo='+page_num
+            url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key=' + api_key + '&type=xml&routeNo=' + ex_code + '&numOfRows=99&pageNo='+page_num
             # url 불러오기
             response = requests.get(url)
             root = ET.fromstring(response.text)
@@ -71,7 +71,7 @@ class XmlReader:
         #serviceArea_code = serviceAreaNameToServiceAreaCode(serviceArea_name)
         page_num = '1'
         while True:
-            url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=10&pageNo='+page_num
+            url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=99&pageNo='+page_num
             response = requests.get(url)
             root = ET.fromstring(response.text)
             flag = False
@@ -91,39 +91,45 @@ class XmlReader:
     def AllExReader(): # all route name
         page_num = '1'
         ex_set = set()
-        while True:
-            url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=10&pageNo='+page_num
-            # url 불러오기
-            response = requests.get(url)
-            root = ET.fromstring(response.text)
-            flag = root.find("list")
-            if flag == None:
-                break
-            for i in root.iter("list"):
-               ex_set.add(i.findtext("routeName"))
-            page_num = str(int(page_num) + 1)
-
+        # while True:
+        #     url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=99&pageNo='+page_num
+        #     # url 불러오기
+        #     response = requests.get(url)
+        #     root = ET.fromstring(response.text)
+        #     flag = root.find("list")
+        #     if flag == None:
+        #         break
+        #     for i in root.iter("list"):
+        #        ex_set.add(i.findtext("routeName"))
+        #     page_num = str(int(page_num) + 1)
+        url = 'https://data.ex.co.kr/openapi/restinfo/hiwaySvarInfoList?key='+api_key+'&type=xml'
+        # url 불러오기
+        response = requests.get(url)
+        root = ET.fromstring(response.text)
+        for i in root.iter("list"):
+            ex_set.add(i.findtext("routeNm"))
         ex_list = list(ex_set)
         return ex_list
 
     @staticmethod
     def ExnameToExcode(ex_name):
-        url = 'https://data.ex.co.kr/openapi/business/curStateStation?key='+api_key+'&type=xml&numOfRows=10&pageNo=1&routeName='+ex_name
+        url = 'https://data.ex.co.kr/openapi/restinfo/hiwaySvarInfoList?key='+api_key+'&type=xml'
         response = requests.get(url)
         root = ET.fromstring(response.text)
         flag = root.find("list")
+
         for list in root.iter("list"):
-            routeCode = list.findtext("routeCode")
-            return routeCode
+            if ex_name == list.findtext("routeNm"):
+                route_code = list.findtext("routeCd")
+                return route_code
 
     @staticmethod
     def serviceAreaNameToServiceAreaCode(serviceArea_name):
-        url = 'https://data.ex.co.kr/openapi/restinfo/restBestfoodList?key='+api_key+'&type=xml&numOfRows=10&pageNo=1&stdRestNm='+serviceArea_name
+        url = 'https://data.ex.co.kr/openapi/restinfo/restBestfoodList?key='+api_key+'&type=xml&numOfRows=99&pageNo=1&stdRestNm='+serviceArea_name
         response = requests.get(url)
         root = ET.fromstring(response.text)
         flag = root.find("list")
         for list in root.iter("list"):
             serviceArea_code = list.findtext("restCd")
             return serviceArea_code
-
 

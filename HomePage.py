@@ -60,7 +60,10 @@ class HomePage(Frame):
     def ComboBoxSelected(self,event):
         print(xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get()))
         self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())
-        self.RestArea_List['values'] = self.ListOfRestAreas
+        if len(self.ListOfRestAreas) == 0:
+            self.RestArea_List['values'] = ['휴게소가 존재하지 않습니다']
+        else:
+            self.RestArea_List['values'] = self.ListOfRestAreas
     def SecondComboBoxSelected(self,event):
         # Text Box
         self.text_box = Text(self, width=30, height=30)
