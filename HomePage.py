@@ -2,8 +2,12 @@ from tkinter import *
 import tkinter.ttk as ttk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
+
+import xmlReader
 import xmlReader as xml
 from tkintermapview import TkinterMapView
+from geopy.geocoders import Nominatim
+
 class HomePage(Frame):
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -53,8 +57,7 @@ class HomePage(Frame):
         controller.show_frame("Bookmark"))
         BookmarkPageButton.place(x=10, y=485)
 
-
-
+        self.geolocator = Nominatim(user_agent="map_view_app")
     def ComboBoxSelected(self,event):
         print(xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get()))
         self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())
@@ -65,7 +68,7 @@ class HomePage(Frame):
 
     def SecondComboBoxSelected(self,event):
         # Text Box
-        self.text_box = Text(self, width=40, height=25)
+        self.text_box = Text(self, width=40, height=26)
         self.text_box.place(x=200, y=160)
         self.text_box.delete('1.0',END)
 
@@ -79,17 +82,22 @@ class HomePage(Frame):
             self.text_box.insert('end', food + '\n')
 
         #parking info
-
+        parking = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())
+        self.text_box.insert('end','★주차 대수★')
         # map
-        self.map_widget = TkinterMapView(width=800, height=500, corner_radius=0)
+        self.map_widget = TkinterMapView(width=300, height=340, corner_radius=0)
 
-        address = '대전광역시 유성구 지족로 362'
-        print(address)
-        marker = self.map_widget.set_address(str(address))
-        print(marker)
-        self.map_widget.set_zoom(15)
+        address = info['address']
+        self.map_widget.set_zoom(10)
+        location=xmlReader.XmlReader.serviceAreaLocationReader(address)
 
-        self.map_widget.place(x=400, y=160)
+        if location['y'] == 0 and location['x'] == 0:
+            label = ttk.Label(self.map_widget, text="위치를 찾을 수 없습니다.", style="Error.TLabel")
+            label.place(relx=0.5, rely=0.5, anchor="center")
+        else:
+            self.map_widget.set_position(location['y'], location['x'])
+            self.map_widget.set_marker(location['y'],location['x'],text=address)
+        self.map_widget.place(x=500, y=160)
 
 
 

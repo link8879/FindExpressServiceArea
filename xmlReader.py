@@ -1,7 +1,9 @@
 import requests
 import xml.etree.ElementTree as ET
+from urllib.parse import quote
 api_key = '5758303589'
-
+client_id = 's4huu1nz8s'
+client_secret = 'KcrskfAf058GDteqg0ssVorQrY46BFECKgSZGY9F'
 class XmlReader:
     @staticmethod
     def FoodMenuReader(serviceArea_name):               # serviceArea name and return food menu list
@@ -95,24 +97,41 @@ class XmlReader:
                 service_Area_info['big_parking'] = int(list.findtext("fscarPrkgTrcn"))
         return service_Area_info
     @staticmethod
-    def serviceAreaLocationReader(serviceArea_name):
+    def serviceAreaLocationReader(address):
         #serviceArea_code = serviceAreaNameToServiceAreaCode(serviceArea_name)
         page_num = '1'
-        while True:
-            url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=99&pageNo='+page_num
-            response = requests.get(url)
-            root = ET.fromstring(response.text)
-            flag = False
-            location = {'x':0,'y':0}
-            for list in root.iter("list"):
-                if serviceArea_name+'휴게소' == list.findtext("unitName"):
-                    flag = True
-                    location['x'] = list.findtext('xValue')
-                    location['y'] = list.findtext('yValue')
-                    break
-            if flag:
-                break
-            page_num = str(int(page_num) + 1)
+        location = {'x': 0, 'y': 0}
+        # while True:
+        #     url = 'https://data.ex.co.kr/openapi/locationinfo/locationinfoRest?key='+api_key+'&type=xml&numOfRows=99&pageNo='+page_num
+        #     response = requests.get(url)
+        #     root = ET.fromstring(response.text)
+        #     flag = False
+        #
+        #     for list in root.iter("list"):
+        #         if serviceArea_name+'휴게소' == list.findtext("unitName"):
+        #             flag = True
+        #             location['x'] = list.findtext('xValue')
+        #             location['y'] = list.findtext('yValue')
+        #             break
+        #     if flag:
+        #         break
+        #     page_num = str(int(page_num) + 1)
+        print(address)
+        encoded_address = address
+        url = 'https://naveropenapi.apigw.ntruss.com/map-geocode/v2/geocode?query='+encoded_address
+        print(url)
+        headers = {
+            'X-NCP-APIGW-API-KEY-ID': client_id,
+            'X-NCP-APIGW-API-KEY': client_secret,
+            'Accept' : 'application/xml'
+        }
+        response = requests.get(url,headers=headers)
+        root = ET.fromstring(response.text)
+        print(response.text)
+        for addr in root.iter("addresses"):
+            location['x'] = float(addr.findtext('x'))
+            location['y'] = float(addr.findtext('y'))
+        print(location)
         return location
 
     @staticmethod
@@ -161,4 +180,3 @@ class XmlReader:
         for list in root.iter("list"):
             serviceArea_code = list.findtext("restCd")
             return serviceArea_code
-
