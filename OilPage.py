@@ -1,7 +1,8 @@
 from tkinter import *
 import tkinter.ttk as ttk
 from tkinter import font
-from xmlReader import *
+import xmlReader as xml
+
 
 class OilPage(Frame):
     def TopText(self):
@@ -31,6 +32,22 @@ class OilPage(Frame):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
         MainCanvas.place(x=0, y=0)
 
+    def FirstRestAreaList(self):
+        RestAreas_Search_1 = Entry(self, width=33, )
+        RestAreas_Search_1.place(x=200, y=110)
+
+    def SecondRestAreaList(self):
+        RestAreas_List_2 = ttk.Combobox(self, width=30, height=10, values=self.RestAreas)
+        RestAreas_List_2.place(x=500, y=140)
+
+    def SearchFirstRestArea(self):
+        RestAreas_Search_1 = Entry(self, width=33, )
+        RestAreas_Search_1.place(x=200, y=110)
+
+    def SearchSecondRestArea(self):
+        RestAreas_Search_2 = Entry(self, width=33)
+        RestAreas_Search_2.place(x=500, y=110)
+
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -39,24 +56,19 @@ class OilPage(Frame):
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
-        RestAreas = [str(i) + "번 휴게소" for i in range(1, 101)]
-
-        # Entry를 이용해서 휴게소 검색창
-        RestAreas_Search_1 = Entry(self, width=33, )
-        RestAreas_Search_1.place(x=200, y=110)
-        RestAreas_Search_2 = Entry(self, width=33)
-        RestAreas_Search_2.place(x=500, y=110)
+        self.RestAreas = xml.XmlReader.AllServiceAreaReader('경부선')
 
         self.TopText()
         self.TopImage()
+
+        self.SearchFirstRestArea()
+        self.SearchSecondRestArea()
+
+        self.FirstRestAreaList()
+        self.SecondRestAreaList()
+
         self.SearchButton_1st()
         self.SearchButton_2nd()
-
-        # 휴게소 비교 콤보박스
-        RestAreas_List_1 = ttk.Combobox(self, width=30, height=10, values=RestAreas)
-        RestAreas_List_1.place(x=200, y=140)
-        RestAreas_List_2 = ttk.Combobox(self, width=30, height=10, values=RestAreas)
-        RestAreas_List_2.place(x=500, y=140)
 
         self.ShowOilPrice()
 
