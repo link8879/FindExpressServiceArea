@@ -30,22 +30,27 @@ class OilPage(Frame):
 
     def TopImage(self):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
+        MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
 
     def FirstRestAreaList(self):
-        RestAreas_Search_1 = Entry(self, width=33, )
-        RestAreas_Search_1.place(x=200, y=110)
+        RestAreas_List_1 = ttk.Combobox(self, width=30, height=10, values=self.RestAreas)
+        RestAreas_List_1.pack()
+        RestAreas_List_1.place(x=200, y=140)
 
     def SecondRestAreaList(self):
         RestAreas_List_2 = ttk.Combobox(self, width=30, height=10, values=self.RestAreas)
+        RestAreas_List_2.pack()
         RestAreas_List_2.place(x=500, y=140)
 
     def SearchFirstRestArea(self):
         RestAreas_Search_1 = Entry(self, width=33, )
+        RestAreas_Search_1.pack()
         RestAreas_Search_1.place(x=200, y=110)
 
     def SearchSecondRestArea(self):
         RestAreas_Search_2 = Entry(self, width=33)
+        RestAreas_Search_2.pack()
         RestAreas_Search_2.place(x=500, y=110)
 
     def __init__(self, parent, controller):
@@ -75,12 +80,15 @@ class OilPage(Frame):
         # 버튼
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
         controller.show_frame("HomePage"))
+        HomeButton.pack()
         HomeButton.place(x=25, y=185)
 
         OilButton = Button(self, image=self.OilImage, width=100, height=100, command=lambda:
         controller.show_frame("OilPage"))
+        OilButton.pack()
         OilButton.place(x=25, y=325)
 
         BookmarkPageButton = Button(self, image=self.BookmarkImage, width=100, height=100, command=lambda:
         controller.show_frame("Bookmark"))
+        BookmarkPageButton.pack()
         BookmarkPageButton.place(x=25, y=465)
