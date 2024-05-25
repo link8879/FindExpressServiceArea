@@ -8,6 +8,21 @@ from tkintermapview import TkinterMapView
 from geopy.geocoders import Nominatim
 
 class HomePage(Frame):
+    def email_button(self):
+        EmailButton = Button(self, text="이메일로 보내기")
+        EmailButton.pack()
+        EmailButton.place(x=650, y=550)
+
+    def telegram_button(self):
+        TelegramButton = Button(self, text="텔레그램에 보내기")
+        TelegramButton.pack()
+        TelegramButton.place(x=450, y=550)
+
+    def bookmark_button(self):
+        BookmarkButton = Button(self, text="즐겨찾기에 추가")
+        BookmarkButton.pack()
+        BookmarkButton.place(x=200, y=550)
+
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -33,19 +48,9 @@ class HomePage(Frame):
         self.RestArea_List.place(x=285, y=130)
         self.RestArea_List.bind("<<ComboboxSelected>>",self.SecondComboBoxSelected)
 
-
-        # button
-        BookmarkButton = Button(self, text="즐겨찾기에 추가")
-        BookmarkButton.pack()
-        BookmarkButton.place(x=200, y=550)
-
-        TelegramButton = Button(self, text="텔레그램에 보내기")
-        TelegramButton.pack()
-        TelegramButton.place(x=450, y=550)
-
-        EmailButton = Button(self, text="이메일로 보내기")
-        EmailButton.pack()
-        EmailButton.place(x=650, y=550)
+        self.bookmark_button()
+        self.telegram_button()
+        self.email_button()
 
         # page button
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
