@@ -22,6 +22,15 @@ class OilPage(Frame):
         SearchButton.pack()
         SearchButton.place(x=740, y=110)
 
+    def ShowOilPrice(self):
+        FOil_canvas = Canvas(self, width=550, height=300, bg='white')
+        FOil_canvas.pack()
+        FOil_canvas.place(x=200, y=185)
+
+    def TopImage(self):
+        MainCanvas = Canvas(self, width=150, height=150, bg='white')
+        MainCanvas.place(x=0, y=0)
+
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -36,9 +45,10 @@ class OilPage(Frame):
         RestAreas_Search_1 = Entry(self, width=33, )
         RestAreas_Search_1.place(x=200, y=110)
         RestAreas_Search_2 = Entry(self, width=33)
-        RestAreas_Search_2.place(x=490, y=110)
+        RestAreas_Search_2.place(x=500, y=110)
 
         self.TopText()
+        self.TopImage()
         self.SearchButton_1st()
         self.SearchButton_2nd()
 
@@ -46,11 +56,9 @@ class OilPage(Frame):
         RestAreas_List_1 = ttk.Combobox(self, width=30, height=10, values=RestAreas)
         RestAreas_List_1.place(x=200, y=140)
         RestAreas_List_2 = ttk.Combobox(self, width=30, height=10, values=RestAreas)
-        RestAreas_List_2.place(x=490, y=140)
+        RestAreas_List_2.place(x=500, y=140)
 
-        # 그림 넣을 캔버스
-        self.MainCanvas = Canvas(self, width=150, height=150, bg='white')
-        self.MainCanvas.place(x=0, y=0)
+        self.ShowOilPrice()
 
         # 버튼
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
