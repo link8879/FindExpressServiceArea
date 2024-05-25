@@ -15,13 +15,13 @@ class OilPage(Frame):
         TempFont = font.Font(self, size=10, family='긱블말랑이')
         SearchButton = Button(self, font=TempFont, text="검색")
         SearchButton.pack()
-        SearchButton.place(x=440, y=110)
+        SearchButton.place(x=427, y=106)
 
     def SearchButton_2nd(self):
         TempFont = font.Font(self, size=10, family='긱블말랑이')
         SearchButton = Button(self, font=TempFont, text="검색")
         SearchButton.pack()
-        SearchButton.place(x=740, y=110)
+        SearchButton.place(x=717, y=106)
 
     def ShowOilPrice(self):
         FOil_canvas = Canvas(self, width=550, height=300, bg='white')
@@ -34,24 +34,28 @@ class OilPage(Frame):
         MainCanvas.place(x=0, y=0)
 
     def FirstRestAreaList(self):
-        RestAreas_List_1 = ttk.Combobox(self, width=30, height=10, values=self.RestAreas)
+        TempFont = font.Font(self, size=10, family='긱블말랑이')
+        RestAreas_List_1 = ttk.Combobox(self, font=TempFont, width=30, height=10, values=self.RestAreas)
         RestAreas_List_1.pack()
         RestAreas_List_1.place(x=200, y=140)
 
     def SecondRestAreaList(self):
-        RestAreas_List_2 = ttk.Combobox(self, width=30, height=10, values=self.RestAreas)
+        TempFont = font.Font(self, size=10, family='긱블말랑이')
+        RestAreas_List_2 = ttk.Combobox(self, font=TempFont, width=30, height=10, values=self.RestAreas)
         RestAreas_List_2.pack()
-        RestAreas_List_2.place(x=500, y=140)
+        RestAreas_List_2.place(x=490, y=140)
 
     def SearchFirstRestArea(self):
-        RestAreas_Search_1 = Entry(self, width=33, )
+        TempFont = font.Font(self, size=10, family='긱블말랑이')
+        RestAreas_Search_1 = Entry(self, width=26, font=TempFont)
         RestAreas_Search_1.pack()
         RestAreas_Search_1.place(x=200, y=110)
 
     def SearchSecondRestArea(self):
-        RestAreas_Search_2 = Entry(self, width=33)
+        TempFont = font.Font(self, size=10, family='긱블말랑이')
+        RestAreas_Search_2 = Entry(self, width=26, font=TempFont)
         RestAreas_Search_2.pack()
-        RestAreas_Search_2.place(x=500, y=110)
+        RestAreas_Search_2.place(x=490, y=110)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
