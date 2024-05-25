@@ -2,8 +2,7 @@ from tkinter import *
 import tkinter.ttk as ttk
 from tkinter import PhotoImage
 from PIL import Image, ImageTk
-
-import xmlReader
+from tkinter import font
 import xmlReader as xml
 from tkintermapview import TkinterMapView
 from geopy.geocoders import Nominatim
@@ -14,13 +13,14 @@ class HomePage(Frame):
         self.controller = controller
 
         self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
-        # self.HomeImage = self.HomeImage.subsample(6, 6)
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
         self.Highway_Routes = xml.XmlReader.AllExReader()
         #self.Highway_Routes = [str(i) + "번 휴게소" for i in range(1, 101)]
         self.ListOfRestAreas = [str(i) + "번 휴게소" for i in range(1, 101)]
+
+        self.TopImage()
 
         # highway route list
         # height = Number of times the list will display
@@ -36,28 +36,41 @@ class HomePage(Frame):
 
         # button
         BookmarkButton = Button(self, text="즐겨찾기에 추가")
+        BookmarkButton.pack()
         BookmarkButton.place(x=200, y=550)
 
         TelegramButton = Button(self, text="텔레그램에 보내기")
+        TelegramButton.pack()
         TelegramButton.place(x=450, y=550)
 
         EmailButton = Button(self, text="이메일로 보내기")
+        EmailButton.pack()
         EmailButton.place(x=650, y=550)
 
         # page button
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
         controller.show_frame("HomePage"))
-        HomeButton.place(x=10, y=255)
+        HomeButton.pack()
+        HomeButton.place(x=25, y=185)
 
         OilButton = Button(self, image=self.OilImage, width=100, height=100, command=lambda:
         controller.show_frame("OilPage"))
-        OilButton.place(x=10, y=370)
+        OilButton.pack()
+        OilButton.place(x=25, y=325)
 
         BookmarkPageButton = Button(self, image=self.BookmarkImage, width=100, height=100, command=lambda:
         controller.show_frame("Bookmark"))
-        BookmarkPageButton.place(x=10, y=485)
+        BookmarkPageButton.pack()
+        BookmarkPageButton.place(x=25, y=465)
 
         self.geolocator = Nominatim(user_agent="map_view_app")
+
+
+    def TopImage(self):
+        MainCanvas = Canvas(self, width=150, height=150, bg='white')
+        MainCanvas.pack()
+        MainCanvas.place(x=0, y=0)
+
     def ComboBoxSelected(self,event):
         print(xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get()))
         self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())
