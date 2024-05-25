@@ -102,7 +102,7 @@ class HomePage(Frame):
 
         address = info['address']
         self.map_widget.set_zoom(10)
-        location=xmlReader.XmlReader.serviceAreaLocationReader(address)
+        location=xml.XmlReader.serviceAreaLocationReader(address)
 
         if location['y'] == 0 and location['x'] == 0:
             label = ttk.Label(self.map_widget, text="위치를 찾을 수 없습니다.", style="Error.TLabel")
