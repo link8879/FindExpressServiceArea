@@ -28,6 +28,8 @@ class HomePage(Frame):
         RestArea_List = ttk.Combobox(self, width=50, height=10, values=ListOfRestAreas)
         RestArea_List.place(x=285, y=130)
 
+
+
         # button
         BookmarkButton = Button(self, text="즐겨찾기에 추가")
         BookmarkButton.place(x=200, y=550)
@@ -41,13 +43,13 @@ class HomePage(Frame):
         # page button
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
         controller.show_frame("HomePage"))
-        HomeButton.place(x=10, y=255)
+        HomeButton.place(x=25, y=185)
 
         OilButton = Button(self, image=self.OilImage, width=100, height=100, command=lambda:
         controller.show_frame("OilPage"))
-        OilButton.place(x=10, y=370)
+        OilButton.place(x=25, y=325)
 
         BookmarkPageButton = Button(self, image=self.BookmarkImage, width=100, height=100, command=lambda:
         controller.show_frame("Bookmark"))
-        BookmarkPageButton.place(x=10, y=485)
+        BookmarkPageButton.place(x=25, y=465)
 
