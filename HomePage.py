@@ -8,6 +8,12 @@ from tkintermapview import TkinterMapView
 from geopy.geocoders import Nominatim
 
 class HomePage(Frame):
+    def TopText(self):
+        TempFont = font.Font(self, size=40, weight='bold', family='긱블말랑이')
+        MainText = Label(self, font=TempFont, text="휴게소 정보")
+        MainText.pack()
+        MainText.place(x=340, y=20)
+
     def email_button(self):
         EmailButton = Button(self, text="이메일로 보내기")
         EmailButton.pack()
@@ -36,6 +42,7 @@ class HomePage(Frame):
         self.ListOfRestAreas = [str(i) + "번 휴게소" for i in range(1, 101)]
 
         self.TopImage()
+        self.TopText()
 
         # highway route list
         # height = Number of times the list will display

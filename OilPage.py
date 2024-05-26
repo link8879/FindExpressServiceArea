@@ -13,7 +13,7 @@ class OilPage(Frame):
 
     def SearchButton_1st(self):
         TempFont = font.Font(self, size=10, family='긱블말랑이')
-        SearchButton = Button(self, font=TempFont, text="검색")
+        SearchButton = Button(self, font=TempFont, command=self.SearchButton_1stAction, text="검색")
         SearchButton.pack()
         SearchButton.place(x=427, y=106)
 
@@ -24,9 +24,9 @@ class OilPage(Frame):
         SearchButton.place(x=717, y=106)
 
     def ShowOilPrice(self):
-        FOil_canvas = Canvas(self, width=550, height=300, bg='white')
-        FOil_canvas.pack()
-        FOil_canvas.place(x=200, y=185)
+        self.FOil_canvas = Canvas(self, width=550, height=300, bg='white')
+        self.FOil_canvas.pack()
+        self.FOil_canvas.place(x=200, y=185)
 
     def TopImage(self):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
@@ -47,15 +47,32 @@ class OilPage(Frame):
 
     def SearchFirstRestArea(self):
         TempFont = font.Font(self, size=10, family='긱블말랑이')
-        RestAreas_Search_1 = Entry(self, width=26, font=TempFont)
+        RestAreas_Search_1 = Entry(self, textvariable=self.first_RA, width=26, font=TempFont)
         RestAreas_Search_1.pack()
         RestAreas_Search_1.place(x=200, y=110)
 
     def SearchSecondRestArea(self):
         TempFont = font.Font(self, size=10, family='긱블말랑이')
-        RestAreas_Search_2 = Entry(self, width=26, font=TempFont)
+        RestAreas_Search_2 = Entry(self, textvariable=self.second_RA, width=26, font=TempFont)
         RestAreas_Search_2.pack()
         RestAreas_Search_2.place(x=490, y=110)
+
+    def SearchButton_1stAction(self):
+        # xml.XmlReader.GasstationReader(self.first_RA)
+        service_area_name = self.first_RA.get()
+        prices = xml.XmlReader.GasstationReader(service_area_name)
+        for company, price in prices.items():
+            text = f"{company}: 경유 - {price['disel']}원, 휘발유 - {price['gasoline']}원"
+            print(text)
+
+
+    def display_oil_prices(self, prices):
+        self.FOil_canvas.delete("all")
+        y = 10
+        for company, price in prices.items():
+            text = f"{company}: 경유 - {price['disel']}원, 휘발유 - {price['gasoline']}원"
+            self.FOil_canvas.create_text(10, y, anchor="nw", text=text)
+            y += 20
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -66,6 +83,9 @@ class OilPage(Frame):
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
         self.RestAreas = xml.XmlReader.AllServiceAreaReader('경부선')
+
+        self.first_RA = StringVar()
+        self.second_RA = StringVar()
 
         self.TopText()
         self.TopImage()
