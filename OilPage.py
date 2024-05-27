@@ -33,18 +33,6 @@ class OilPage(Frame):
         MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
 
-    def FirstRestAreaList(self):
-        TempFont = font.Font(self, size=10, family='긱블말랑이')
-        RestAreas_List_1 = ttk.Combobox(self, font=TempFont, width=30, height=10, values=self.RestAreas)
-        RestAreas_List_1.pack()
-        RestAreas_List_1.place(x=200, y=140)
-
-    def SecondRestAreaList(self):
-        TempFont = font.Font(self, size=10, family='긱블말랑이')
-        RestAreas_List_2 = ttk.Combobox(self, font=TempFont, width=30, height=10, values=self.RestAreas)
-        RestAreas_List_2.pack()
-        RestAreas_List_2.place(x=490, y=140)
-
     def SearchFirstRestArea(self):
         TempFont = font.Font(self, size=10, family='긱블말랑이')
         RestAreas_Search_1 = Entry(self, textvariable=self.first_RA, width=26, font=TempFont)
@@ -57,23 +45,6 @@ class OilPage(Frame):
         RestAreas_Search_2.pack()
         RestAreas_Search_2.place(x=490, y=110)
 
-    def SearchButton_1stAction(self):
-        # xml.XmlReader.GasstationReader(self.first_RA)
-        service_area_name = self.first_RA.get()
-        prices = xml.XmlReader.GasstationReader(service_area_name)
-        for company, price in prices.items():
-            text = f"{company}: 경유 - {price['disel']}원, 휘발유 - {price['gasoline']}원"
-            print(text)
-
-
-    def display_oil_prices(self, prices):
-        self.FOil_canvas.delete("all")
-        y = 10
-        for company, price in prices.items():
-            text = f"{company}: 경유 - {price['disel']}원, 휘발유 - {price['gasoline']}원"
-            self.FOil_canvas.create_text(10, y, anchor="nw", text=text)
-            y += 20
-
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -81,8 +52,16 @@ class OilPage(Frame):
         self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
+        self.TempFont = font.Font(self, size=10, family='긱블말랑이')
 
-        self.RestAreas = xml.XmlReader.AllServiceAreaReader('경부선')
+        # self.RouteList = ['경부선', '고창담양선', '광주대구선', '광주대구선,무안광주선', '남해선', '남해선(영암순천)',
+        #                   '남해제1지선', '남해제2지선', '논산천안선,호남선', '대구포항선', '대전남부순환선', '동해선',
+        #                   '무안광주선', '부산외곽순환선', ]
+        self.highway_routes = xml.XmlReader.AllExReader()
+        self.all_restarea = []
+
+        for route in self.highway_routes:
+            self.all_restarea.extend(xml.XmlReader.AllServiceAreaReader(route))
 
         self.first_RA = StringVar()
         self.second_RA = StringVar()
@@ -93,10 +72,15 @@ class OilPage(Frame):
         self.SearchFirstRestArea()
         self.SearchSecondRestArea()
 
-        self.FirstRestAreaList()
-        self.SecondRestAreaList()
+        self.RestAreas_List_1 = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.all_restarea)
+        self.RestAreas_List_1.pack()
+        self.RestAreas_List_1.place(x=200, y=140)
 
-        self.SearchButton_1st()
+        self.RestAreas_List_2 = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.all_restarea)
+        self.RestAreas_List_2.pack()
+        self.RestAreas_List_2.place(x=490, y=140)
+
+        # self.SearchButton_1st()
         self.SearchButton_2nd()
 
         self.ShowOilPrice()
