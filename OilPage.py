@@ -23,11 +23,6 @@ class OilPage(Frame):
         SearchButton.pack()
         SearchButton.place(x=717, y=106)
 
-    def ShowOilPrice(self):
-        self.FOil_canvas = Canvas(self, width=550, height=300, bg='white')
-        self.FOil_canvas.pack()
-        self.FOil_canvas.place(x=200, y=185)
-
     def TopImage(self):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
         MainCanvas.pack()
@@ -44,6 +39,16 @@ class OilPage(Frame):
         RestAreas_Search_2 = Entry(self, textvariable=self.second_RA, width=26, font=TempFont)
         RestAreas_Search_2.pack()
         RestAreas_Search_2.place(x=490, y=110)
+
+    def FirstAreaSelected(self, event):
+        # selected_area = self.RestAreas_List_1.get()
+        Oilprice = xml.XmlReader.GasstationReader(self.RestAreas_List_1.get())
+        for company, price in Oilprice.items():
+            prices = "{}: 디젤 - {}원, 가솔린 - {}원".format(company, price['disel'], price['gasoline'])
+            print(prices)
+
+    def SecondAreaSelected(self, event):
+        pass
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -63,6 +68,10 @@ class OilPage(Frame):
         for route in self.highway_routes:
             self.all_restarea.extend(xml.XmlReader.AllServiceAreaReader(route))
 
+        self.FOil_canvas = Canvas(self, width=550, height=300, bg='white')
+        self.FOil_canvas.pack()
+        self.FOil_canvas.place(x=200, y=185)
+
         self.first_RA = StringVar()
         self.second_RA = StringVar()
 
@@ -75,15 +84,15 @@ class OilPage(Frame):
         self.RestAreas_List_1 = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.all_restarea)
         self.RestAreas_List_1.pack()
         self.RestAreas_List_1.place(x=200, y=140)
+        self.RestAreas_List_1.bind("<<ComboboxSelected>>", self.FirstAreaSelected)
 
         self.RestAreas_List_2 = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.all_restarea)
         self.RestAreas_List_2.pack()
         self.RestAreas_List_2.place(x=490, y=140)
+        self.RestAreas_List_2.bind("<<ComboboxSelected>>", self.SecondAreaSelected)
 
         # self.SearchButton_1st()
         self.SearchButton_2nd()
-
-        self.ShowOilPrice()
 
         # 버튼
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
