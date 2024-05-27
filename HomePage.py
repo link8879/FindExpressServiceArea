@@ -64,6 +64,7 @@ class HomePage(Frame):
         BookmarkPageButton.place(x=25, y=465)
 
         self.map_widget = TkinterMapView(width=300, height=340, corner_radius=0)
+        self.text_box = Text(self, width=40, height=26)
     def TopImage(self):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
         MainCanvas.pack()
