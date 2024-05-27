@@ -28,6 +28,9 @@ class MainGUI(Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+        if hasattr(frame, 'show_map_widget'):
+            frame.show_map_widget()
+
 
 if __name__ == "__main__":
     app = MainGUI()

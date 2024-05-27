@@ -72,10 +72,10 @@ class XmlReader:
         # url 불러오기
         response = requests.get(url)
         root = ET.fromstring(response.text)
-        service_Area_info = {'adress':'','parking':0,'up_down':''}
+        #service_Area_info = {'address':'','parking':0,'up_down':''}
         for list in root.iter("list"):
             if '휴게소' == list.findtext("svarGsstClssNm"):
-                service_Area_info['up_down'] = list.findtext("gudClssNm")
+                #service_Area_info['up_down'] = list.findtext("gudClssNm")
 
                 service_area_list.append(list.findtext("svarNm"))
 
