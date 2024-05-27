@@ -15,19 +15,19 @@ class HomePage(Frame):
         MainText.place(x=340, y=20)
 
     def email_button(self):
-        EmailButton = Button(self, text="이메일로 보내기")
+        EmailButton = Button(self, image=self.EmailImage, width=50, height=50)
         EmailButton.pack()
-        EmailButton.place(x=650, y=550)
+        EmailButton.place(x=700, y=525)
 
     def telegram_button(self):
-        TelegramButton = Button(self, text="텔레그램에 보내기")
+        TelegramButton = Button(self, image=self.TelegramImage, width=50, height=50)
         TelegramButton.pack()
-        TelegramButton.place(x=450, y=550)
+        TelegramButton.place(x=600, y=525)
 
     def bookmark_button(self):
-        BookmarkButton = Button(self, text="즐겨찾기에 추가")
+        BookmarkButton = Button(self, image=self.BMImage, width=50, height=50)
         BookmarkButton.pack()
-        BookmarkButton.place(x=200, y=550)
+        BookmarkButton.place(x=500, y=525)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -36,6 +36,9 @@ class HomePage(Frame):
         self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
+        self.EmailImage = PhotoImage(file="image/gmail.png")
+        self.TelegramImage = PhotoImage(file="image/텔레그램.png")
+        self.BMImage = PhotoImage(file="image/즐겨찾기(빈 별)(50x50).png")
 
         self.Highway_Routes = xml.XmlReader.AllExReader()
         #self.Highway_Routes = [str(i) + "번 휴게소" for i in range(1, 101)]
