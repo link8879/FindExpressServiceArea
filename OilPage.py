@@ -41,14 +41,18 @@ class OilPage(Frame):
         RestAreas_Search_2.place(x=490, y=110)
 
     def FirstAreaSelected(self, event):
-        # selected_area = self.RestAreas_List_1.get()
-        Oilprice = xml.XmlReader.GasstationReader(self.RestAreas_List_1.get())
+        selected_area = self.RestAreas_List_1.get().replace('휴게소', '')
+        Oilprice = xml.XmlReader.GasstationReader(selected_area)
         for company, price in Oilprice.items():
             prices = "{}: 디젤 - {}원, 가솔린 - {}원".format(company, price['disel'], price['gasoline'])
             print(prices)
 
     def SecondAreaSelected(self, event):
-        pass
+        selected_area = self.RestAreas_List_2.get().replace('휴게소', '')
+        Oilprice = xml.XmlReader.GasstationReader(selected_area)
+        for company, price in Oilprice.items():
+            prices = "{}: 디젤 - {}원, 가솔린 - {}원".format(company, price['disel'], price['gasoline'])
+            print(prices)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
