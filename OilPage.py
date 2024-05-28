@@ -40,11 +40,15 @@ class OilPage(Frame):
         RestAreas_Search_2.pack()
         RestAreas_Search_2.place(x=490, y=110)
 
+    def extract_price(self, price_str):
+        clean_str = price_str.replace(',', '').replace('원', '')
+        return float(clean_str)
+
     def FirstAreaSelected(self, event):
         selected_area = self.RestAreas_List_1.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}원, 가솔린 - {}원".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.FCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -53,15 +57,16 @@ class OilPage(Frame):
                 self.FCompany = 'HD현대오일뱅크'
             else:
                 self.FCompany = company
-            self.FGasoline = price['gasoline']
-            self.FDisel = price['disel']
+            self.FGasoline = self.extract_price(price['gasoline'])
+            self.FDisel = self.extract_price(price['disel'])
             print(prices)
+        self.update_graph()
 
     def SecondAreaSelected(self, event):
         selected_area = self.RestAreas_List_2.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}원, 가솔린 - {}원".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.SCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -70,12 +75,17 @@ class OilPage(Frame):
                 self.SCompany = 'HD현대오일뱅크'
             else:
                 self.SCompany = company
-            self.SGasoline = price['gasoline']
-            self.SDisel = price['disel']
+            self.SGasoline = self.extract_price(price['gasoline'])
+            self.SDisel = self.extract_price(price['disel'])
             print(prices)
+        self.update_graph()
 
-    def ShowOilPrice(self):
-
+    def update_graph(self):
+        self.Oil_canvas.delete('price')
+        self.Oil_canvas.create_rectangle(250, 250 - self.FGasoline * 0.1, 300, 250, fill="red", tags='price')
+        self.Oil_canvas.create_rectangle(400, 250 - self.FDisel * 0.1, 450, 250, fill="tomato", tags='price')
+        self.Oil_canvas.create_rectangle(300, 250 - self.SGasoline * 0.1, 350, 250, fill="deepskyblue", tags='price')
+        self.Oil_canvas.create_rectangle(450, 250 - self.SDisel * 0.1, 500, 250, fill="cyan", tags='price')
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -104,9 +114,9 @@ class OilPage(Frame):
         for route in self.highway_routes:
             self.all_restarea.extend(xml.XmlReader.AllServiceAreaReader(route))
 
-        self.FOil_canvas = Canvas(self, width=550, height=300, bg='white')
-        self.FOil_canvas.pack()
-        self.FOil_canvas.place(x=200, y=185)
+        self.Oil_canvas = Canvas(self, width=550, height=300, bg='white')
+        self.Oil_canvas.pack()
+        self.Oil_canvas.place(x=200, y=185)
 
         self.first_RA = StringVar()
         self.second_RA = StringVar()
@@ -129,6 +139,8 @@ class OilPage(Frame):
 
         # self.SearchButton_1st()
         self.SearchButton_2nd()
+
+        self.update_graph()
 
         # 버튼
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
