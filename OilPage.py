@@ -87,6 +87,16 @@ class OilPage(Frame):
         self.Oil_canvas.create_rectangle(300, 250 - self.SGasoline * 0.1, 350, 250, fill="deepskyblue", tags='price')
         self.Oil_canvas.create_rectangle(450, 250 - self.SDisel * 0.1, 500, 250, fill="cyan", tags='price')
 
+        # 가격표시
+        self.Oil_canvas.create_text(275, 250 - self.FGasoline * 0.1 - 15, text=self.FGasoline, tags='price')
+        self.Oil_canvas.create_text(325, 250 - self.SGasoline * 0.1 - 15, text=self.SGasoline, tags='price')
+        self.Oil_canvas.create_text(425, 250 - self.FDisel * 0.1 - 15, text=self.FDisel, tags='price')
+        self.Oil_canvas.create_text(475, 250 - self.FDisel * 0.1 - 15, text=self.SDisel, tags='price')
+
+        # 경유, 휘발유 표시
+        self.Oil_canvas.create_text(300, 270, text="경유")
+        self.Oil_canvas.create_text(450, 270, text="휘발유")
+
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
