@@ -12,14 +12,12 @@ class OilPage(Frame):
         MainText.place(x=190, y=20)
 
     def SearchButton_1st(self):
-        TempFont = font.Font(self, size=10, family='긱블말랑이')
-        SearchButton = Button(self, font=TempFont, command=self.SearchButton_1stAction, text="검색")
+        SearchButton = Button(self, font=self.TempFont, command=self.SearchButton_1stAction, text="검색")
         SearchButton.pack()
         SearchButton.place(x=427, y=106)
 
     def SearchButton_2nd(self):
-        TempFont = font.Font(self, size=10, family='긱블말랑이')
-        SearchButton = Button(self, font=TempFont, text="검색")
+        SearchButton = Button(self, font=self.TempFont, text="검색")
         SearchButton.pack()
         SearchButton.place(x=717, y=106)
 
@@ -29,14 +27,12 @@ class OilPage(Frame):
         MainCanvas.place(x=0, y=0)
 
     def SearchFirstRestArea(self):
-        TempFont = font.Font(self, size=10, family='긱블말랑이')
-        RestAreas_Search_1 = Entry(self, textvariable=self.first_RA, width=26, font=TempFont)
+        RestAreas_Search_1 = Entry(self, textvariable=self.first_RA, width=26, font=self.TempFont)
         RestAreas_Search_1.pack()
         RestAreas_Search_1.place(x=200, y=110)
 
     def SearchSecondRestArea(self):
-        TempFont = font.Font(self, size=10, family='긱블말랑이')
-        RestAreas_Search_2 = Entry(self, textvariable=self.second_RA, width=26, font=TempFont)
+        RestAreas_Search_2 = Entry(self, textvariable=self.second_RA, width=26, font=self.TempFont)
         RestAreas_Search_2.pack()
         RestAreas_Search_2.place(x=490, y=110)
 
@@ -88,14 +84,14 @@ class OilPage(Frame):
         self.Oil_canvas.create_rectangle(450, 250 - self.SDisel * 0.1, 500, 250, fill="cyan", tags='price')
 
         # 가격표시
-        self.Oil_canvas.create_text(275, 250 - self.FGasoline * 0.1 - 15, text=self.FGasoline, tags='price')
-        self.Oil_canvas.create_text(325, 250 - self.SGasoline * 0.1 - 15, text=self.SGasoline, tags='price')
-        self.Oil_canvas.create_text(425, 250 - self.FDisel * 0.1 - 15, text=self.FDisel, tags='price')
-        self.Oil_canvas.create_text(475, 250 - self.FDisel * 0.1 - 15, text=self.SDisel, tags='price')
+        self.Oil_canvas.create_text(275, 250 - self.FGasoline * 0.1 - 15, text=int(self.FGasoline), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(325, 250 - self.SGasoline * 0.1 - 15, text=int(self.SGasoline), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(425, 250 - self.FDisel * 0.1 - 15, text=int(self.FDisel), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(475, 250 - self.FDisel * 0.1 - 15, text=int(self.SDisel), font=self.TempFont, tags='price')
 
         # 경유, 휘발유 표시
-        self.Oil_canvas.create_text(300, 270, text="경유")
-        self.Oil_canvas.create_text(450, 270, text="휘발유")
+        self.Oil_canvas.create_text(300, 270, text="경유", font=self.TempFont)
+        self.Oil_canvas.create_text(450, 270, text="휘발유", font=self.TempFont)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
