@@ -45,6 +45,16 @@ class OilPage(Frame):
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
         for company, price in Oilprice.items():
             prices = "{}: 디젤 - {}원, 가솔린 - {}원".format(company, price['disel'], price['gasoline'])
+            if company == 'AD':
+                self.FCompany = '알뜰 주유소'
+            elif company == 'SK':
+                self.FCompany = 'SK 주유소'
+            elif company == 'HD':
+                self.FCompany = 'HD현대오일뱅크'
+            else:
+                self.FCompany = company
+            self.FGasoline = price['gasoline']
+            self.FDisel = price['disel']
             print(prices)
 
     def SecondAreaSelected(self, event):
@@ -52,7 +62,20 @@ class OilPage(Frame):
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
         for company, price in Oilprice.items():
             prices = "{}: 디젤 - {}원, 가솔린 - {}원".format(company, price['disel'], price['gasoline'])
+            if company == 'AD':
+                self.SCompany = '알뜰 주유소'
+            elif company == 'SK':
+                self.SCompany = 'SK 주유소'
+            elif company == 'HD':
+                self.SCompany = 'HD현대오일뱅크'
+            else:
+                self.SCompany = company
+            self.SGasoline = price['gasoline']
+            self.SDisel = price['disel']
             print(prices)
+
+    def ShowOilPrice(self):
+
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -62,6 +85,15 @@ class OilPage(Frame):
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
         self.TempFont = font.Font(self, size=10, family='긱블말랑이')
+
+        # 1번 주유소
+        self.FCompany = ""
+        self.FGasoline = 0
+        self.FDisel = 0
+        # 2번 주유소
+        self.SCompany = ""
+        self.SGasoline = 0
+        self.SDisel = 0
 
         # self.RouteList = ['경부선', '고창담양선', '광주대구선', '광주대구선,무안광주선', '남해선', '남해선(영암순천)',
         #                   '남해제1지선', '남해제2지선', '논산천안선,호남선', '대구포항선', '대전남부순환선', '동해선',
