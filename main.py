@@ -28,6 +28,16 @@ class MainGUI(Tk):
         frame = self.frames[page_name]
         frame.tkraise()
 
+        for frames in self.frames.values():
+            if hasattr(frames,'map_widget'):
+                frames.map_widget.destroy()
+
+        if hasattr(frame, 'text_box'):
+            frame.map_widget.destroy()
+            frame.text_box.destroy()
+            frame.Highway_Route_List.set('')
+            frame.RestArea_List.set('')
+
 
 if __name__ == "__main__":
     app = MainGUI()
