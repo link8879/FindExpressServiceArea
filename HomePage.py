@@ -97,7 +97,7 @@ class HomePage(Frame):
         else:
             self.RestArea_List['values'] = self.ListOfRestAreas
     def SetTextBox(self):
-
+        self.text_box.destroy()
         self.text_box = Text(self, width=40, height=26)
 
         self.text_box.place(x=200, y=160)
@@ -123,6 +123,7 @@ class HomePage(Frame):
 
         self.text_box.config(state=DISABLED)
     def SetMap(self):
+        self.map_widget.destroy()
         info = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())
         self.map_widget = TkinterMapView(width=300, height=340, corner_radius=0)
         address = info['address']
