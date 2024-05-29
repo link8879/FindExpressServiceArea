@@ -40,6 +40,22 @@ class OilPage(Frame):
         clean_str = price_str.replace(',', '').replace('원', '')
         return float(clean_str)
 
+    def FirstRouteSelected(self, event):
+        print(xml.XmlReader.AllServiceAreaReader(self.Highway_List.get()))
+        self.First_restareas = xml.XmlReader.AllServiceAreaReader(self.Highway_List.get())
+        if len(self.First_restareas) == 0:
+            self.RestAreas_List_1['values'] = ['휴게소가 존재하지 않습니다']
+        else:
+            self.RestAreas_List_1['values'] = self.First_restareas
+
+    def SecondRouteSelected(self, event):
+        print(xml.XmlReader.AllServiceAreaReader(self.Highway_List_2.get()))
+        self.Second_restareas = xml.XmlReader.AllServiceAreaReader(self.Highway_List_2.get())
+        if len(self.Second_restareas) == 0:
+            self.RestAreas_List_2['values'] = ['휴게소가 존재하지 않습니다']
+        else:
+            self.RestAreas_List_2['values'] = self.Second_restareas
+
     def FirstAreaSelected(self, event):
         selected_area = self.RestAreas_List_1.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
@@ -90,8 +106,9 @@ class OilPage(Frame):
         self.Oil_canvas.create_text(475, 250 - self.FDisel * 0.1 - 15, text=int(self.SDisel), font=self.TempFont, tags='price')
 
         # 경유, 휘발유 표시
-        self.Oil_canvas.create_text(300, 270, text="경유", font=self.TempFont)
-        self.Oil_canvas.create_text(450, 270, text="휘발유", font=self.TempFont)
+        TempFont = font.Font(self, size=20, weight='bold', family='긱블말랑이')
+        self.Oil_canvas.create_text(300, 270, text="경유", font=TempFont)
+        self.Oil_canvas.create_text(450, 270, text="휘발유", font=TempFont)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -111,14 +128,9 @@ class OilPage(Frame):
         self.SGasoline = 0
         self.SDisel = 0
 
-        # self.RouteList = ['경부선', '고창담양선', '광주대구선', '광주대구선,무안광주선', '남해선', '남해선(영암순천)',
-        #                   '남해제1지선', '남해제2지선', '논산천안선,호남선', '대구포항선', '대전남부순환선', '동해선',
-        #                   '무안광주선', '부산외곽순환선', ]
         self.highway_routes = xml.XmlReader.AllExReader()
-        self.all_restarea = []
-
-        for route in self.highway_routes:
-            self.all_restarea.extend(xml.XmlReader.AllServiceAreaReader(route))
+        self.First_restareas = []
+        self.Second_restareas = []
 
         self.Oil_canvas = Canvas(self, width=550, height=300, bg='white')
         self.Oil_canvas.pack()
@@ -133,14 +145,22 @@ class OilPage(Frame):
         self.SearchFirstRestArea()
         self.SearchSecondRestArea()
 
-        self.RestAreas_List_1 = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.all_restarea)
+        self.Highway_List = ttk.Combobox(self, font=self.TempFont, width=12, height=10, values=self.highway_routes)
+        self.Highway_List.place(x=200, y=140)
+        self.Highway_List.bind("<<ComboboxSelected>>", self.FirstRouteSelected)
+
+        self.Highway_List_2 = ttk.Combobox(self, font=self.TempFont, width=12, height=10, values=self.highway_routes)
+        self.Highway_List_2.place(x=490, y=140)
+        self.Highway_List_2.bind("<<ComboboxSelected>>", self.SecondRouteSelected)
+
+        self.RestAreas_List_1 = ttk.Combobox(self, font=self.TempFont, width=15, height=10, values=self.First_restareas)
         self.RestAreas_List_1.pack()
-        self.RestAreas_List_1.place(x=200, y=140)
+        self.RestAreas_List_1.place(x=320, y=140)
         self.RestAreas_List_1.bind("<<ComboboxSelected>>", self.FirstAreaSelected)
 
-        self.RestAreas_List_2 = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.all_restarea)
+        self.RestAreas_List_2 = ttk.Combobox(self, font=self.TempFont, width=15, height=10, values=self.Second_restareas)
         self.RestAreas_List_2.pack()
-        self.RestAreas_List_2.place(x=490, y=140)
+        self.RestAreas_List_2.place(x=610, y=140)
         self.RestAreas_List_2.bind("<<ComboboxSelected>>", self.SecondAreaSelected)
 
         # self.SearchButton_1st()
