@@ -16,25 +16,64 @@ class OilPage(Frame):
         SearchButton.pack()
         SearchButton.place(x=427, y=106)
 
+    def SearchButton_1stAction(self):
+        selected_area = self.first_RA.get().replace('휴게소', '')
+        print(selected_area)
+        Oilprice = xml.XmlReader.GasstationReader(selected_area)
+
+        self.FCompany = "주유소가 없습니다."
+        self.FGasoline = 0
+        self.FDisel = 0
+
+        for company, price in Oilprice.items():
+            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            if company == 'AD':
+                self.FCompany = '알뜰 주유소'
+            elif company == 'SK':
+                self.FCompany = 'SK 주유소'
+            elif company == 'HD':
+                self.FCompany = 'HD현대오일뱅크'
+            else:
+                self.FCompany = company
+            self.FGasoline = self.extract_price(price['gasoline'])
+            self.FDisel = self.extract_price(price['disel'])
+            print(prices)
+        self.update_graph()
+
     def SearchButton_2nd(self):
-        SearchButton = Button(self, font=self.TempFont, text="검색")
+        SearchButton = Button(self, font=self.TempFont, command=self.SearchButton_2ndAction, text="검색")
         SearchButton.pack()
         SearchButton.place(x=717, y=106)
+
+    def SearchButton_2ndAction(self):
+        selected_area = self.second_RA.get().replace('휴게소', '')
+        print(selected_area)
+        Oilprice = xml.XmlReader.GasstationReader(selected_area)
+
+        self.SCompany = "주유소가 없습니다."
+        self.SGasoline = 0
+        self.SDisel = 0
+
+        for company, price in Oilprice.items():
+            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            if company == 'AD':
+                self.SCompany = '알뜰 주유소'
+            elif company == 'SK':
+                self.SCompany = 'SK 주유소'
+            elif company == 'HD':
+                self.SCompany = 'HD현대오일뱅크'
+            else:
+                self.SCompany = company
+            self.SGasoline = self.extract_price(price['gasoline'])
+            self.SDisel = self.extract_price(price['disel'])
+            print(prices)
+        self.update_graph()
 
     def TopImage(self):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
         MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
 
-    def SearchFirstRestArea(self):
-        RestAreas_Search_1 = Entry(self, textvariable=self.first_RA, width=26, font=self.TempFont)
-        RestAreas_Search_1.pack()
-        RestAreas_Search_1.place(x=200, y=110)
-
-    def SearchSecondRestArea(self):
-        RestAreas_Search_2 = Entry(self, textvariable=self.second_RA, width=26, font=self.TempFont)
-        RestAreas_Search_2.pack()
-        RestAreas_Search_2.place(x=490, y=110)
 
     def extract_price(self, price_str):
         clean_str = price_str.replace(',', '').replace('원', '')
@@ -59,6 +98,11 @@ class OilPage(Frame):
     def FirstAreaSelected(self, event):
         selected_area = self.RestAreas_List_1.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
+
+        self.FCompany = "주유소가 없습니다."
+        self.FGasoline = 0
+        self.FDisel = 0
+
         for company, price in Oilprice.items():
             prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
@@ -77,6 +121,11 @@ class OilPage(Frame):
     def SecondAreaSelected(self, event):
         selected_area = self.RestAreas_List_2.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
+
+        self.SCompany = "주유소가 없습니다."
+        self.SGasoline = 0
+        self.SDisel = 0
+
         for company, price in Oilprice.items():
             prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
@@ -103,7 +152,7 @@ class OilPage(Frame):
         self.Oil_canvas.create_text(275, 250 - self.FGasoline * 0.1 - 15, text=int(self.FGasoline), font=self.TempFont, tags='price')
         self.Oil_canvas.create_text(325, 250 - self.SGasoline * 0.1 - 15, text=int(self.SGasoline), font=self.TempFont, tags='price')
         self.Oil_canvas.create_text(425, 250 - self.FDisel * 0.1 - 15, text=int(self.FDisel), font=self.TempFont, tags='price')
-        self.Oil_canvas.create_text(475, 250 - self.FDisel * 0.1 - 15, text=int(self.SDisel), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(475, 250 - self.SDisel * 0.1 - 15, text=int(self.SDisel), font=self.TempFont, tags='price')
 
         # 경유, 휘발유 표시
         TempFont = font.Font(self, size=20, weight='bold', family='긱블말랑이')
@@ -136,14 +185,19 @@ class OilPage(Frame):
         self.Oil_canvas.pack()
         self.Oil_canvas.place(x=200, y=185)
 
-        self.first_RA = StringVar()
-        self.second_RA = StringVar()
-
         self.TopText()
         self.TopImage()
 
-        self.SearchFirstRestArea()
-        self.SearchSecondRestArea()
+        # self.SearchFirstRestArea()
+        self.first_RA = StringVar()
+        RestAreas_Search_1 = Entry(self, textvariable=self.first_RA, width=26, font=self.TempFont)
+        RestAreas_Search_1.pack()
+        RestAreas_Search_1.place(x=200, y=110)
+
+        self.second_RA = StringVar()
+        RestAreas_Search_2 = Entry(self, textvariable=self.second_RA, width=26, font=self.TempFont)
+        RestAreas_Search_2.pack()
+        RestAreas_Search_2.place(x=490, y=110)
 
         self.Highway_List = ttk.Combobox(self, font=self.TempFont, width=12, height=10, values=self.highway_routes)
         self.Highway_List.place(x=200, y=140)
@@ -163,7 +217,7 @@ class OilPage(Frame):
         self.RestAreas_List_2.place(x=610, y=140)
         self.RestAreas_List_2.bind("<<ComboboxSelected>>", self.SecondAreaSelected)
 
-        # self.SearchButton_1st()
+        self.SearchButton_1st()
         self.SearchButton_2nd()
 
         self.update_graph()
