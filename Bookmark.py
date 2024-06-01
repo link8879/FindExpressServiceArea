@@ -15,11 +15,9 @@ class Bookmark(Frame):
         MainText.pack()
         MainText.place(x=370, y=20)
 
-    def BookMarkList(self):
-        TempFont = font.Font(self, size=20, family='긱블말랑이')
-        Bookmark = ttk.Combobox(self, font=TempFont, width=30, height=10, values=self.BMList)
-        Bookmark.pack()
-        Bookmark.place(x=210, y=120)
+    def update_bookmark_list(self, new_restarea):
+        self.BMList.append(new_restarea)
+        self.Bookmark['values'] = self.BMList
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -29,12 +27,15 @@ class Bookmark(Frame):
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
 
-        self.BMList = [str(i) + "번 노선" for i in range(1, 101)]
+        self.BMList = []
 
         self.TopImage()
         self.TopText()
 
-        self.BookMarkList()
+        self.TempFont = font.Font(self, size=20, family='긱블말랑이')
+        self.Bookmark = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.BMList)
+        self.Bookmark.pack()
+        self.Bookmark.place(x=210, y=120)
 
         HomeButton = Button(self, image=self.HomeImage, width=100, height=100, command=lambda:
         controller.show_frame("HomePage"))

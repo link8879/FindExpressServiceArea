@@ -38,6 +38,9 @@ class MainGUI(Tk):
             frame.Highway_Route_List.set('')
             frame.RestArea_List.set('')
 
+    def get_page(self, page_name):
+        return self.frames[page_name]
+
 
 if __name__ == "__main__":
     app = MainGUI()

@@ -6,6 +6,7 @@ from tkinter import font
 import xmlReader as xml
 from tkintermapview import TkinterMapView
 from geopy.geocoders import Nominatim
+from Bookmark import Bookmark
 
 class HomePage(Frame):
     def TopText(self):
@@ -25,9 +26,15 @@ class HomePage(Frame):
         TelegramButton.place(x=600, y=525)
 
     def bookmark_button(self):
-        BookmarkButton = Button(self, image=self.BMImage, width=50, height=50)
+        BookmarkButton = Button(self, image=self.BMImage, width=50, height=50, command=self.bookmark_button_action)
         BookmarkButton.pack()
         BookmarkButton.place(x=500, y=525)
+
+    def bookmark_button_action(self):
+        selected_area = self.RestArea_List.get()
+        bookmark_page = self.controller.get_page("Bookmark")
+        bookmark_page.update_bookmark_list(selected_area)
+        print(selected_area)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
