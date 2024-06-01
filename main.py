@@ -29,14 +29,19 @@ class MainGUI(Tk):
         frame.tkraise()
 
         for frames in self.frames.values():
-            if hasattr(frames,'map_widget'):
+            if hasattr(frames, 'map_widget'):
                 frames.map_widget.destroy()
 
-        if hasattr(frame, 'text_box'):
+        if hasattr(frame, 'Highway_Route_List'):
             frame.map_widget.destroy()
             frame.text_box.destroy()
             frame.Highway_Route_List.set('')
             frame.RestArea_List.set('')
+
+        if hasattr(frame, 'Bookmark'):
+            frame.map_widget.destroy()
+            frame.text_box.destroy()
+            frame.Bookmark.set('')
 
     def get_page(self, page_name):
         return self.frames[page_name]
