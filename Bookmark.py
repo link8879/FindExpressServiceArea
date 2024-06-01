@@ -17,9 +17,24 @@ class Bookmark(Frame):
         MainText.pack()
         MainText.place(x=370, y=20)
 
+    def delete_button(self):
+        DeleteButton = Button(self, image=self.TrashImage, width=50, height=50, command=self.delete_bookmark)
+        DeleteButton.pack()
+        DeleteButton.place(x=700, y=525)
+
     def update_bookmark_list(self, new_restarea):
         self.BMList.append(new_restarea)
         self.Bookmark['values'] = self.BMList
+
+    def delete_bookmark(self):
+        selected = self.Bookmark.get()
+        if selected in self.BMList:
+            self.BMList.remove(selected)
+            self.Bookmark['values'] = self.BMList
+            self.Bookmark.set('')
+            self.text_box.destroy()
+            self.map_widget.destroy()
+            print(f"Deleted bookmark: {selected}")
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -28,6 +43,7 @@ class Bookmark(Frame):
         self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
+        self.TrashImage = PhotoImage(file="image/trash.png")
 
         self.default_font = font.Font(family="긱블말랑이", size=14)
         self.larger_font = font.Font(family="긱블말랑이", size=20)
@@ -36,6 +52,7 @@ class Bookmark(Frame):
 
         self.TopImage()
         self.TopText()
+        self.delete_button()
 
         self.TempFont = font.Font(self, size=20, family='긱블말랑이')
         self.Bookmark = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.BMList)
@@ -80,8 +97,6 @@ class Bookmark(Frame):
         for food in food_menu:
             self.text_box.insert('end', food + '\n',"default")
 
-        # parking info
-        # parking = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())
         self.text_box.insert('end', '3.주차 대수' + '\n',"large")
         self.text_box.insert('end', '소형차 ' + str(info['small_parking']) + '\n',"default")
         self.text_box.insert('end', '대형차 ' + str(info['big_parking']) + '\n',"default")
