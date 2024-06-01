@@ -99,6 +99,7 @@ class OilPage(Frame):
         selected_area = self.RestAreas_List_1.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
 
+        self.FRA = selected_area + "휴게소"
         self.FCompany = "주유소가 없습니다."
         self.FGasoline = 0
         self.FDisel = 0
@@ -122,6 +123,7 @@ class OilPage(Frame):
         selected_area = self.RestAreas_List_2.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
 
+        self.SRA = selected_area + "휴게소"
         self.SCompany = "주유소가 없습니다."
         self.SGasoline = 0
         self.SDisel = 0
@@ -169,7 +171,9 @@ class OilPage(Frame):
         elif self.SCompany == 'S':
             self.Oil_canvas.create_image(25, 175, anchor=NW, image=self.S_oil_company, tags='price')
 
-        self.Oil_canvas.update()
+        # 휴게소 이름, 주유소 이름
+        self.Oil_canvas.create_text(85, 135, text=self.FRA + " " + self.FCompany, font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(85, 285, text=self.SRA + " " + self.SCompany, font=self.TempFont, tags='price')
 
         # 가격 표시
         self.Oil_canvas.create_text(275, 250 - self.FGasoline * 0.1 - 15, text=int(self.FGasoline), font=self.TempFont, tags='price')
@@ -196,6 +200,9 @@ class OilPage(Frame):
         self.S_oil_company = PhotoImage(file="image/S-OIL(200x68).png")
         # 폰트
         self.TempFont = font.Font(self, size=10, family='긱블말랑이')
+
+        self.FRA = ""
+        self.SRA = ""
 
         # 1번 주유소
         self.FCompany = ""

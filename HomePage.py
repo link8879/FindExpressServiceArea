@@ -52,13 +52,13 @@ class HomePage(Frame):
 
         # highway route list
         # height = Number of times the list will display
-        self.Highway_Route_List = ttk.Combobox(self, width=20, height=10, values=self.Highway_Routes,font=self.default_font)
-        self.Highway_Route_List.place(x=285, y=100)
+        self.Highway_Route_List = ttk.Combobox(self, width=42, height=10, values=self.Highway_Routes,font=self.default_font)
+        self.Highway_Route_List.place(x=200, y=100)
         self.Highway_Route_List.bind("<<ComboboxSelected>>", self.ComboBoxSelected)
 
         # RestArea list
-        self.RestArea_List = ttk.Combobox(self, width=20, height=10, values=self.ListOfRestAreas,font = self.default_font)
-        self.RestArea_List.place(x=285, y=130)
+        self.RestArea_List = ttk.Combobox(self, width=42, height=10, values=self.ListOfRestAreas,font = self.default_font)
+        self.RestArea_List.place(x=200, y=130)
         self.RestArea_List.bind("<<ComboboxSelected>>",self.SecondComboBoxSelected)
 
         self.bookmark_button()
