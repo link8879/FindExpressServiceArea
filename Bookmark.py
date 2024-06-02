@@ -23,18 +23,19 @@ class Bookmark(Frame):
         DeleteButton.place(x=700, y=525)
 
     def update_bookmark_list(self, new_restarea):
-        self.BMList.append(new_restarea)
-        self.Bookmark['values'] = self.BMList
+        self.BMSet.add(new_restarea)
+        self.Bookmark['values'] = list(self.BMSet)
 
     def delete_bookmark(self):
         selected = self.Bookmark.get()
-        if selected in self.BMList:
-            self.BMList.remove(selected)
-            self.Bookmark['values'] = self.BMList
+        if selected in self.BMSet:
+            self.BMSet.remove(selected)
             self.Bookmark.set('')
             self.text_box.destroy()
             self.map_widget.destroy()
             print(f"Deleted bookmark: {selected}")
+
+        self.Bookmark['values'] = list(self.BMSet)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -48,14 +49,14 @@ class Bookmark(Frame):
         self.default_font = font.Font(family="긱블말랑이", size=14)
         self.larger_font = font.Font(family="긱블말랑이", size=20)
 
-        self.BMList = []
+        self.BMSet = set()
 
         self.TopImage()
         self.TopText()
         self.delete_button()
 
         self.TempFont = font.Font(self, size=20, family='긱블말랑이')
-        self.Bookmark = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=self.BMList)
+        self.Bookmark = ttk.Combobox(self, font=self.TempFont, width=30, height=10, values=list(self.BMSet))
         self.Bookmark.pack()
         self.Bookmark.place(x=210, y=120)
         self.Bookmark.bind("<<ComboboxSelected>>", self.SecondComboBoxSelected)
