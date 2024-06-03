@@ -5,30 +5,13 @@ from PIL import Image, ImageTk
 from tkinter import font
 import xmlReader as xml
 from tkintermapview import TkinterMapView
-from geopy.geocoders import Nominatim
+from tkinter import messagebox
+import mimetypes
+import smtplib
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
 
 class HomePage(Frame):
-    def TopText(self):
-        TempFont = font.Font(self, size=40, weight='bold', family='긱블말랑이')
-        MainText = Label(self, font=TempFont, text="휴게소 정보")
-        MainText.pack()
-        MainText.place(x=340, y=20)
-
-    def email_button(self):
-        EmailButton = Button(self, image=self.EmailImage, width=50, height=50)
-        EmailButton.pack()
-        EmailButton.place(x=700, y=525)
-
-    def telegram_button(self):
-        TelegramButton = Button(self, image=self.TelegramImage, width=50, height=50)
-        TelegramButton.pack()
-        TelegramButton.place(x=600, y=525)
-
-    def bookmark_button(self):
-        BookmarkButton = Button(self, image=self.BMImage, width=50, height=50)
-        BookmarkButton.pack()
-        BookmarkButton.place(x=500, y=525)
-
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -83,7 +66,59 @@ class HomePage(Frame):
 
         self.map_widget = TkinterMapView(width=300, height=340, corner_radius=0)
         self.text_box = Text(self, width=40, height=26)
+        self.serviceArea_name = ""
+        self.info = {}
+        self.food_menu = ""
 
+    def TopText(self):
+        TempFont = font.Font(self, size=40, weight='bold', family='긱블말랑이')
+        MainText = Label(self, font=TempFont, text="휴게소 정보")
+        MainText.pack()
+        MainText.place(x=340, y=20)
+
+    def email_button(self):
+        EmailButton = Button(self, image=self.EmailImage, width=50, height=50, command=self.sendEmail)
+        EmailButton.pack()
+        EmailButton.place(x=700, y=525)
+
+    def telegram_button(self):
+        TelegramButton = Button(self, image=self.TelegramImage, width=50, height=50)
+        TelegramButton.pack()
+        TelegramButton.place(x=600, y=525)
+
+    def bookmark_button(self):
+        BookmarkButton = Button(self, image=self.BMImage, width=50, height=50)
+        BookmarkButton.pack()
+        BookmarkButton.place(x=500, y=525)
+
+    def sendEmail(self):
+        # global value
+        host = "smtp.gmail.com"  # Gmail STMP 서버 주소.
+        port = "587"
+
+        senderAddr = "link8879@tukorea.ac.kr"  # 보내는 사람 email 주소.
+        recipientAddr = "link8879@naver.com"  # 받는 사람 email 주소.
+
+        msg = MIMEBase("multipart", "alternative")
+        msg['Subject'] = "휴게소 정보 보내드립니다."
+        msg['From'] = senderAddr
+        msg['To'] = recipientAddr
+        text = "안녕하세요. 선택하신 휴게소 정보 보내드립니다.\n" + "휴게소 이름" + self.serviceArea_name+"\n"+"휴게소 주소" + self.info['address']
+
+        textPart = MIMEText(text, 'plain', _charset='UTF-8')
+        msg.attach(textPart)
+
+        # 메일을 발송한다.
+        s = smtplib.SMTP(host, port)
+        # s.set_debuglevel(1)
+        s.ehlo()
+        s.starttls()
+        s.ehlo()
+        s.login("link8879@tukorea.ac.kr", "qwfvlutljmdlzhpc")
+        s.sendmail(senderAddr, [recipientAddr], msg.as_string())
+        s.close()
+
+        messagebox.showinfo("정보","메일을 보냈습니다.")
 
     def TopImage(self):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
@@ -106,20 +141,22 @@ class HomePage(Frame):
         self.text_box.tag_configure("default", font=self.default_font)
         self.text_box.tag_configure("large", font=self.larger_font)
 
-        info = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())  # adress parking up and down info
-        self.text_box.insert('1.0', '1.주소' + '\n', "large")
-        self.text_box.insert('end', info['address'] + '\n', "default")
+        self.serviceArea_name = self.RestArea_List.get()
 
-        food_menu = xml.XmlReader.FoodMenuReader(self.RestArea_List.get())  # food info
+        self.info = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())  # adress parking up and down info
+        self.text_box.insert('1.0', '1.주소' + '\n', "large")
+        self.text_box.insert('end', self.info['address'] + '\n', "default")
+
+        self.food_menu = xml.XmlReader.FoodMenuReader(self.RestArea_List.get())  # food info
         self.text_box.insert('end', '2.음식 메뉴' + '\n',"large")
-        for food in food_menu:
+        for food in self.food_menu:
             self.text_box.insert('end', food + '\n',"default")
 
         # parking info
         # parking = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())
         self.text_box.insert('end', '3.주차 대수' + '\n',"large")
-        self.text_box.insert('end', '소형차 ' + str(info['small_parking']) + '\n',"default")
-        self.text_box.insert('end', '대형차 ' + str(info['big_parking']) + '\n',"default")
+        self.text_box.insert('end', '소형차 ' + str(self.info['small_parking']) + '\n',"default")
+        self.text_box.insert('end', '대형차 ' + str(self.info['big_parking']) + '\n',"default")
 
         self.text_box.config(state=DISABLED)
     def SetMap(self):
