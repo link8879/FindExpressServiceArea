@@ -159,10 +159,39 @@ class HomePage(Frame):
         # parking info
         # parking = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())
         self.text_box.insert('end', '3.주차 대수' + '\n',"large")
-        self.text_box.insert('end', '소형차 ' + str(self.info['small_parking']) + '\n',"default")
-        self.text_box.insert('end', '대형차 ' + str(self.info['big_parking']) + '\n',"default")
+        self.text_box.insert('end', '소형차: ' + str(self.info['small_parking']) + '\n',"default")
+        self.text_box.insert('end', '대형차: ' + str(self.info['big_parking']) + '\n',"default")
 
+        # gassation info
+        self.setOilPrice()
+        self.text_box.insert('end', '4.주유소 가격' + '\n', "large")
+        self.text_box.insert('end','휘발유: ' + str(self.FGasoline) + '\n',"default")
+        self.text_box.insert('end','경유: ' + str(self.FDisel),"default")
         self.text_box.config(state=DISABLED)
+
+
+    def setOilPrice(self):
+        selected_area = self.serviceArea_name.replace('휴게소', '')
+        print(selected_area)
+        Oilprice = xml.XmlReader.GasstationReader(selected_area)
+
+        self.FCompany = "주유소가 없습니다."
+        self.FGasoline = 0
+        self.FDisel = 0
+
+        for company, price in Oilprice.items():
+            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            if company == 'AD':
+                self.FCompany = '알뜰 주유소'
+            elif company == 'SK':
+                self.FCompany = 'SK 주유소'
+            elif company == 'HD':
+                self.FCompany = 'HD현대오일뱅크'
+            else:
+                self.FCompany = company
+            self.FGasoline = price['gasoline']
+            self.FDisel = price['disel']
+            print(prices)
     def SetMap(self):
         self.map_widget.destroy()
         info = xml.XmlReader.serviceAreaInfoReader(self.RestArea_List.get())
