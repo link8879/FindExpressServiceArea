@@ -103,7 +103,11 @@ class HomePage(Frame):
         msg['Subject'] = "휴게소 정보 보내드립니다."
         msg['From'] = senderAddr
         msg['To'] = recipientAddr
-        text = "안녕하세요. 선택하신 휴게소 정보 보내드립니다.\n" + "휴게소 이름" + self.serviceArea_name+"\n"+"휴게소 주소" + self.info['address']
+        text = "안녕하세요. 선택하신 휴게소 정보 보내드립니다.\n" + "휴게소 이름: " + self.serviceArea_name+"\n"+"휴게소 주소: " + self.info['address'] + "\n"+ "휴게소 음식들\n"
+        for food in self.food_menu:
+            text += food + "\n"
+        text += "소형차 주차 대수 -> " + str(self.info['small_parking']) + "\n"
+        text += "대형차 주차 대수 -> " + str(self.info['big_parking']) + "\n"
 
         textPart = MIMEText(text, 'plain', _charset='UTF-8')
         msg.attach(textPart)
