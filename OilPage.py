@@ -142,17 +142,19 @@ class OilPage(Frame):
         self.update_graph()
 
     def update_graph(self):
+        y_base = 250
+        scale = 0.1
         self.Oil_canvas.delete('price')
-        self.Oil_canvas.create_rectangle(250, 250 - self.FGasoline * 0.1, 300, 250, fill="tomato", tags='price')
-        self.Oil_canvas.create_rectangle(400, 250 - self.FDisel * 0.1, 450, 250, fill="tomato", tags='price')
-        self.Oil_canvas.create_rectangle(300, 250 - self.SGasoline * 0.1, 350, 250, fill="deepskyblue", tags='price')
-        self.Oil_canvas.create_rectangle(450, 250 - self.SDisel * 0.1, 500, 250, fill="deepskyblue", tags='price')
+        self.Oil_canvas.create_rectangle(250, y_base - self.FGasoline * scale, 300, 250, fill="tomato", tags='price')
+        self.Oil_canvas.create_rectangle(400, y_base - self.FDisel * scale, 450, 250, fill="tomato", tags='price')
+        self.Oil_canvas.create_rectangle(300, y_base - self.SGasoline * scale, 350, 250, fill="deepskyblue", tags='price')
+        self.Oil_canvas.create_rectangle(450, y_base - self.SDisel * scale, 500, 250, fill="deepskyblue", tags='price')
 
         # 가격 표시
-        self.Oil_canvas.create_text(275, 250 - self.FGasoline * 0.1 - 15, text=int(self.FGasoline), font=self.TempFont, tags='price')
-        self.Oil_canvas.create_text(325, 250 - self.SGasoline * 0.1 - 15, text=int(self.SGasoline), font=self.TempFont, tags='price')
-        self.Oil_canvas.create_text(425, 250 - self.FDisel * 0.1 - 15, text=int(self.FDisel), font=self.TempFont, tags='price')
-        self.Oil_canvas.create_text(475, 250 - self.SDisel * 0.1 - 15, text=int(self.SDisel), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(275, y_base - self.FGasoline * scale - 15, text=int(self.FGasoline), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(325, y_base - self.SGasoline * scale - 15, text=int(self.SGasoline), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(425, y_base - self.FDisel * scale - 15, text=int(self.FDisel), font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(475, y_base - self.SDisel * scale - 15, text=int(self.SDisel), font=self.TempFont, tags='price')
 
         # 경유, 휘발유 표시
         TempFont = font.Font(self, size=20, weight='bold', family='긱블말랑이')

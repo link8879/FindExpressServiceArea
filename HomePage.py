@@ -6,6 +6,7 @@ from tkinter import font
 import xmlReader as xml
 from tkintermapview import TkinterMapView
 from tkinter import messagebox
+from tkinter import simpledialog
 import mimetypes
 import smtplib
 from email.mime.base import MIMEBase
@@ -92,12 +93,13 @@ class HomePage(Frame):
         BookmarkButton.place(x=500, y=525)
 
     def sendEmail(self):
+        input_value = simpledialog.askstring("입력", "메일 주소를 입력하세요:")
         # global value
         host = "smtp.gmail.com"  # Gmail STMP 서버 주소.
         port = "587"
 
         senderAddr = "link8879@tukorea.ac.kr"  # 보내는 사람 email 주소.
-        recipientAddr = "link8879@naver.com"  # 받는 사람 email 주소.
+        recipientAddr = input_value  # 받는 사람 email 주소.
 
         msg = MIMEBase("multipart", "alternative")
         msg['Subject'] = "휴게소 정보 보내드립니다."
@@ -135,6 +137,7 @@ class HomePage(Frame):
             self.RestArea_List['values'] = ['휴게소가 존재하지 않습니다']
         else:
             self.RestArea_List['values'] = self.ListOfRestAreas
+
     def SetTextBox(self):
         self.text_box.destroy()
         self.text_box = Text(self, width=40, height=26)
@@ -165,6 +168,7 @@ class HomePage(Frame):
         # gassation info
         self.setOilPrice()
         self.text_box.insert('end', '4.주유소 가격' + '\n', "large")
+        self.text_box.insert('end',"주유소 회사: " +str(self.FCompany) + '\n',"default")
         self.text_box.insert('end','휘발유: ' + str(self.FGasoline) + '\n',"default")
         self.text_box.insert('end','경유: ' + str(self.FDisel),"default")
         self.text_box.config(state=DISABLED)
