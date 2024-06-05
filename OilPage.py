@@ -26,7 +26,7 @@ class OilPage(Frame):
         self.FDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.FCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -55,7 +55,7 @@ class OilPage(Frame):
         self.SDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.SCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -105,7 +105,7 @@ class OilPage(Frame):
         self.FDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.FCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -129,7 +129,7 @@ class OilPage(Frame):
         self.SDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.SCompany = '알뜰 주유소'
             elif company == 'SK':

@@ -48,7 +48,7 @@ class HomePage(Frame):
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
         self.EmailImage = PhotoImage(file="image/gmail.png")
         self.TelegramImage = PhotoImage(file="image/텔레그램.png")
-        self.BMImage = PhotoImage(file="image/즐겨찾기(빈 별)(50x50).png")
+        self.BMImage = PhotoImage(file="image/즐겨찾기(50x50).png")
 
         self.Highway_Routes = xml.XmlReader.AllExReader()
         #self.Highway_Routes = [str(i) + "번 휴게소" for i in range(1, 101)]
