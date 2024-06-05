@@ -7,6 +7,7 @@ import xmlReader as xml
 from tkintermapview import TkinterMapView
 from geopy.geocoders import Nominatim
 from Bookmark import Bookmark
+import threading
 
 class HomePage(Frame):
     def TopText(self):
@@ -21,7 +22,7 @@ class HomePage(Frame):
         EmailButton.place(x=700, y=525)
 
     def telegram_button(self):
-        TelegramButton = Button(self, image=self.TelegramImage, width=50, height=50)
+        TelegramButton = Button(self, image=self.TelegramImage, width=50, height=50, command=self.telegram_button_action)
         TelegramButton.pack()
         TelegramButton.place(x=600, y=525)
 
@@ -35,6 +36,14 @@ class HomePage(Frame):
         bookmark_page = self.controller.get_page("Bookmark")
         bookmark_page.update_bookmark_list(selected_area)
         print(selected_area)
+
+    def telegram_button_action(self):
+        if not self.controller.telegram_bot_running:
+            self.controller.start_telegram_bot()
+            print("텔레그램 봇 시작")
+        else:
+            self.controller.stop_telegram_bot()
+            print("텔레그램 봇 중지")
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -151,14 +160,4 @@ class HomePage(Frame):
         self.SetTextBox()
         # map
         self.SetMap()
-
-
-
-
-
-
-
-
-
-
 
