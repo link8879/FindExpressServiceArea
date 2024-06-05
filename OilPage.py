@@ -148,6 +148,12 @@ class OilPage(Frame):
     def update_graph(self):
         self.Oil_canvas.delete('price')
 
+        self.Oil_canvas.create_rectangle(250, 25, 270, 45, fill="tomato")
+        self.Oil_canvas.create_rectangle(400, 25, 420, 45, fill="deepskyblue")
+
+        self.Oil_canvas.create_text(330, 35, text=self.FRA, font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(480, 35, text=self.SRA, font=self.TempFont, tags='price')
+
         # 가격 그래프
         self.Oil_canvas.create_rectangle(250, 250 - self.FGasoline * 0.1, 300, 250, fill="tomato", tags='price')
         self.Oil_canvas.create_rectangle(400, 250 - self.FDisel * 0.1, 450, 250, fill="tomato", tags='price')
