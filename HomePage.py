@@ -58,6 +58,7 @@ class HomePage(Frame):
         self.EmailImage = PhotoImage(file="image/gmail.png")
         self.TelegramImage = PhotoImage(file="image/텔레그램.png")
         self.BMImage = PhotoImage(file="image/즐겨찾기(50x50).png")
+        self.MainImage = PhotoImage(file="image/쉼표 로고.png")
 
         self.Highway_Routes = xml.XmlReader.AllExReader()
         #self.Highway_Routes = [str(i) + "번 휴게소" for i in range(1, 101)]
@@ -105,6 +106,8 @@ class HomePage(Frame):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
         MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
+
+        MainCanvas.create_image(0, 0, anchor=NW, image=self.MainImage)
 
     def ComboBoxSelected(self,event):
         self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())

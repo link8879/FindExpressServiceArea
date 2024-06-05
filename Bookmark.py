@@ -11,6 +11,8 @@ class Bookmark(Frame):
         MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
 
+        MainCanvas.create_image(0, 0, anchor=NW, image=self.MainImage)
+
     def TopText(self):
         TempFont = font.Font(self, size=40, weight='bold', family='긱블말랑이')
         MainText = Label(self, font=TempFont, text="즐겨찾기")
@@ -45,6 +47,7 @@ class Bookmark(Frame):
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
         self.TrashImage = PhotoImage(file="image/trash.png")
+        self.MainImage = PhotoImage(file="image/쉼표 로고.png")
 
         self.default_font = font.Font(family="긱블말랑이", size=14)
         self.larger_font = font.Font(family="긱블말랑이", size=20)

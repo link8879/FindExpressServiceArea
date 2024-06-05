@@ -74,6 +74,8 @@ class OilPage(Frame):
         MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
 
+        MainCanvas.create_image(0, 0, anchor=NW, image=self.MainImage)
+
 
     def extract_price(self, price_str):
         clean_str = price_str.replace(',', '').replace('원', '')
@@ -198,6 +200,8 @@ class OilPage(Frame):
         self.SK_oil_company = PhotoImage(file="image/SK(128x100).png")
         self.HD_oil_company = PhotoImage(file="image/현대오일뱅크(200x68).png")
         self.S_oil_company = PhotoImage(file="image/S-OIL(200x68).png")
+        self.MainImage = PhotoImage(file="image/쉼표 로고.png")
+
         # 폰트
         self.TempFont = font.Font(self, size=10, family='긱블말랑이')
 
