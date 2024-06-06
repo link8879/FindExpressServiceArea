@@ -111,16 +111,16 @@ class MainGUI(Tk):
                 for company, price in data.items():
                     if company == 'AD':
                         company = '알뜰 주유소'
-                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['disel'], price['gasoline'])
+                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['gasoline'], price['disel'])
                     elif company == 'SK':
                         company = 'SK 주유소'
-                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['disel'], price['gasoline'])
+                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['gasoline'], price['disel'])
                     elif company == 'HD':
                         company = '현대오일뱅크 주유소'
-                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['disel'], price['gasoline'])
+                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['gasoline'], price['disel'])
                     elif company == 'S':
                         company = 'S-OIL 주유소'
-                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['disel'], price['gasoline'])
+                        response += "{}: 휘발유 - {}, 경유 - {}\n".format(company, price['gasoline'], price['disel'])
                 return response if response else "해당 휴게소 정보를 찾을 수 없습니다."
             else:
                 return "해당 휴게소 정보를 찾을 수 없습니다."
