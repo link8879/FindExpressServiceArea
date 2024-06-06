@@ -21,12 +21,13 @@ class OilPage(Frame):
         print(selected_area)
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
 
+        self.FRA = selected_area + "휴게소"
         self.FCompany = "주유소가 없습니다."
         self.FGasoline = 0
         self.FDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['gasoline'], price['disel'])
             if company == 'AD':
                 self.FCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -50,12 +51,13 @@ class OilPage(Frame):
         print(selected_area)
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
 
+        self.SRA = selected_area + "휴게소"
         self.SCompany = "주유소가 없습니다."
         self.SGasoline = 0
         self.SDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['gasoline'], price['disel'])
             if company == 'AD':
                 self.SCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -107,7 +109,7 @@ class OilPage(Frame):
         self.FDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['gasoline'], price['disel'])
             if company == 'AD':
                 self.FCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -131,7 +133,7 @@ class OilPage(Frame):
         self.SDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['gasoline'], price['disel'])
             if company == 'AD':
                 self.SCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -194,8 +196,8 @@ class OilPage(Frame):
 
         # 경유, 휘발유 표시
         TempFont = font.Font(self, size=20, weight='bold', family='긱블말랑이')
-        self.Oil_canvas.create_text(300, 270, text="경유", font=TempFont)
-        self.Oil_canvas.create_text(450, 270, text="휘발유", font=TempFont)
+        self.Oil_canvas.create_text(300, 270, text="휘발유", font=TempFont)
+        self.Oil_canvas.create_text(450, 270, text="경유", font=TempFont)
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
