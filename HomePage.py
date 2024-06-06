@@ -22,7 +22,7 @@ class HomePage(Frame):
         MainText.place(x=340, y=20)
 
     def email_button(self):
-        EmailButton = Button(self, image=self.EmailImage, width=50, height=50)
+        EmailButton = Button(self, image=self.EmailImage, width=50, height=50, command= self.sendEmail)
         EmailButton.pack()
         EmailButton.place(x=700, y=525)
 
