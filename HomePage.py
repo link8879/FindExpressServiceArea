@@ -111,8 +111,38 @@ class HomePage(Frame):
         text += "소형차 주차 대수 -> " + str(self.info['small_parking']) + "\n"
         text += "대형차 주차 대수 -> " + str(self.info['big_parking']) + "\n"
 
-        textPart = MIMEText(text, 'plain', _charset='UTF-8')
-        msg.attach(textPart)
+        text += "주유소 회사: " + str(self.FCompany) + "\n"
+        text += "휘발유: " + str(self.FGasoline) + "\n"
+        text += "경유: " + str(self.FDisel) +"\n"
+
+        html_text = f"""
+        <html>
+        <body>
+        <p>안녕하세요. 선택하신 휴게소 정보 보내드립니다.</p>
+        <p><strong>휴게소 이름:</strong> <span style="font-family: Arial; font-size: 14px;">{self.serviceArea_name}</span></p>
+        <p><strong>휴게소 주소:</strong> <span style="font-family: Arial; font-size: 14px;">{self.info['address']}</span></p>
+        <p><strong>휴게소 음식들:</strong></p>
+        <ul>
+        """
+        for food in self.food_menu:
+            html_text += f"<li style='font-family: Arial; font-size: 14px;'>{food}</li>"
+        html_text += f"""
+        </ul>
+        <p><strong>소형차 주차 대수:</strong> <span style="font-family: Arial; font-size: 14px;">{self.info['small_parking']}</span></p>
+        <p><strong>대형차 주차 대수:</strong> <span style="font-family: Arial; font-size: 14px;">{self.info['big_parking']}</span></p>
+        <p><strong>주유소 회사:</strong> <span style="font-family: Arial; font-size: 14px;">{self.FCompany}</span></p>
+        <p><strong>휘발유:</strong> <span style="font-family: Arial; font-size: 14px;">{self.FGasoline}</span></p>
+        <p><strong>경유:</strong> <span style="font-family: Arial; font-size: 14px;">{self.FDisel}</span></p>
+        </body>
+        </html>
+        """
+
+        text_part = MIMEText(text, 'plain', _charset='UTF-8')
+        html_part = MIMEText(html_text, 'html', _charset='UTF-8')
+
+        # 메시지에 첨부
+        msg.attach(text_part)
+        msg.attach(html_part)
 
         # 메일을 발송한다.
         s = smtplib.SMTP(host, port)
