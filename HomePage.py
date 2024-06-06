@@ -11,8 +11,44 @@ import mimetypes
 import smtplib
 from email.mime.base import MIMEBase
 from email.mime.text import MIMEText
+from Bookmark import Bookmark
+import threading
 
 class HomePage(Frame):
+    def TopText(self):
+        TempFont = font.Font(self, size=40, weight='bold', family='긱블말랑이')
+        MainText = Label(self, font=TempFont, text="휴게소 정보")
+        MainText.pack()
+        MainText.place(x=340, y=20)
+
+    def email_button(self):
+        EmailButton = Button(self, image=self.EmailImage, width=50, height=50)
+        EmailButton.pack()
+        EmailButton.place(x=700, y=525)
+
+    def telegram_button(self):
+        TelegramButton = Button(self, image=self.TelegramImage, width=50, height=50, command=self.telegram_button_action)
+        TelegramButton.pack()
+        TelegramButton.place(x=600, y=525)
+
+    def bookmark_button(self):
+        BookmarkButton = Button(self, image=self.BMImage, width=50, height=50, command=self.bookmark_button_action)
+        BookmarkButton.pack()
+        BookmarkButton.place(x=500, y=525)
+
+    def bookmark_button_action(self):
+        selected_area = self.RestArea_List.get()
+        bookmark_page = self.controller.get_page("Bookmark")
+        bookmark_page.update_bookmark_list(selected_area)
+        print(selected_area)
+
+    def telegram_button_action(self):
+        if not self.controller.telegram_bot_running:
+            self.controller.start_telegram_bot()
+            print("텔레그램 봇 시작")
+        else:
+            self.controller.stop_telegram_bot()
+            print("텔레그램 봇 중지")
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
         self.controller = controller
@@ -25,7 +61,8 @@ class HomePage(Frame):
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
         self.EmailImage = PhotoImage(file="image/gmail.png")
         self.TelegramImage = PhotoImage(file="image/텔레그램.png")
-        self.BMImage = PhotoImage(file="image/즐겨찾기(빈 별)(50x50).png")
+        self.BMImage = PhotoImage(file="image/즐겨찾기(50x50).png")
+        self.MainImage = PhotoImage(file="image/쉼표 로고.png")
 
         self.Highway_Routes = xml.XmlReader.AllExReader()
         #self.Highway_Routes = [str(i) + "번 휴게소" for i in range(1, 101)]
@@ -36,13 +73,13 @@ class HomePage(Frame):
 
         # highway route list
         # height = Number of times the list will display
-        self.Highway_Route_List = ttk.Combobox(self, width=20, height=10, values=self.Highway_Routes,font=self.default_font)
-        self.Highway_Route_List.place(x=285, y=100)
+        self.Highway_Route_List = ttk.Combobox(self, width=42, height=10, values=self.Highway_Routes,font=self.default_font)
+        self.Highway_Route_List.place(x=200, y=100)
         self.Highway_Route_List.bind("<<ComboboxSelected>>", self.ComboBoxSelected)
 
         # RestArea list
-        self.RestArea_List = ttk.Combobox(self, width=20, height=10, values=self.ListOfRestAreas,font = self.default_font)
-        self.RestArea_List.place(x=285, y=130)
+        self.RestArea_List = ttk.Combobox(self, width=42, height=10, values=self.ListOfRestAreas,font = self.default_font)
+        self.RestArea_List.place(x=200, y=130)
         self.RestArea_List.bind("<<ComboboxSelected>>",self.SecondComboBoxSelected)
 
         self.bookmark_button()
@@ -71,26 +108,7 @@ class HomePage(Frame):
         self.info = {}
         self.food_menu = ""
 
-    def TopText(self):
-        TempFont = font.Font(self, size=40, weight='bold', family='긱블말랑이')
-        MainText = Label(self, font=TempFont, text="휴게소 정보")
-        MainText.pack()
-        MainText.place(x=340, y=20)
 
-    def email_button(self):
-        EmailButton = Button(self, image=self.EmailImage, width=50, height=50, command=self.sendEmail)
-        EmailButton.pack()
-        EmailButton.place(x=700, y=525)
-
-    def telegram_button(self):
-        TelegramButton = Button(self, image=self.TelegramImage, width=50, height=50)
-        TelegramButton.pack()
-        TelegramButton.place(x=600, y=525)
-
-    def bookmark_button(self):
-        BookmarkButton = Button(self, image=self.BMImage, width=50, height=50)
-        BookmarkButton.pack()
-        BookmarkButton.place(x=500, y=525)
 
     def sendEmail(self):
         input_value = simpledialog.askstring("입력", "메일 주소를 입력하세요:")
@@ -160,6 +178,8 @@ class HomePage(Frame):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
         MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
+
+        MainCanvas.create_image(0, 0, anchor=NW, image=self.MainImage)
 
     def ComboBoxSelected(self,event):
         self.ListOfRestAreas = xml.XmlReader.AllServiceAreaReader(self.Highway_Route_List.get())
@@ -248,14 +268,4 @@ class HomePage(Frame):
         self.SetTextBox()
         # map
         self.SetMap()
-
-
-
-
-
-
-
-
-
-
 

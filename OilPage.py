@@ -26,7 +26,7 @@ class OilPage(Frame):
         self.FDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.FCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -55,7 +55,7 @@ class OilPage(Frame):
         self.SDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.SCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -73,6 +73,8 @@ class OilPage(Frame):
         MainCanvas = Canvas(self, width=150, height=150, bg='white')
         MainCanvas.pack()
         MainCanvas.place(x=0, y=0)
+
+        MainCanvas.create_image(0, 0, anchor=NW, image=self.MainImage)
 
 
     def extract_price(self, price_str):
@@ -99,12 +101,13 @@ class OilPage(Frame):
         selected_area = self.RestAreas_List_1.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
 
+        self.FRA = selected_area + "휴게소"
         self.FCompany = "주유소가 없습니다."
         self.FGasoline = 0
         self.FDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.FCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -122,12 +125,13 @@ class OilPage(Frame):
         selected_area = self.RestAreas_List_2.get().replace('휴게소', '')
         Oilprice = xml.XmlReader.GasstationReader(selected_area)
 
+        self.SRA = selected_area + "휴게소"
         self.SCompany = "주유소가 없습니다."
         self.SGasoline = 0
         self.SDisel = 0
 
         for company, price in Oilprice.items():
-            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            prices = "{}: 휘발유 - {}, 경유 - {}".format(company, price['disel'], price['gasoline'])
             if company == 'AD':
                 self.SCompany = '알뜰 주유소'
             elif company == 'SK':
@@ -145,10 +149,42 @@ class OilPage(Frame):
         y_base = 250
         scale = 0.1
         self.Oil_canvas.delete('price')
-        self.Oil_canvas.create_rectangle(250, y_base - self.FGasoline * scale, 300, 250, fill="tomato", tags='price')
-        self.Oil_canvas.create_rectangle(400, y_base - self.FDisel * scale, 450, 250, fill="tomato", tags='price')
-        self.Oil_canvas.create_rectangle(300, y_base - self.SGasoline * scale, 350, 250, fill="deepskyblue", tags='price')
-        self.Oil_canvas.create_rectangle(450, y_base - self.SDisel * scale, 500, 250, fill="deepskyblue", tags='price')
+
+
+        self.Oil_canvas.create_rectangle(250, 25, 270, 45, fill="tomato")
+        self.Oil_canvas.create_rectangle(400, 25, 420, 45, fill="deepskyblue")
+
+        self.Oil_canvas.create_text(330, 35, text=self.FRA, font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(480, 35, text=self.SRA, font=self.TempFont, tags='price')
+
+        # 가격 그래프
+        self.Oil_canvas.create_rectangle(250, 250 - self.FGasoline * 0.1, 300, 250, fill="tomato", tags='price')
+        self.Oil_canvas.create_rectangle(400, 250 - self.FDisel * 0.1, 450, 250, fill="tomato", tags='price')
+        self.Oil_canvas.create_rectangle(300, 250 - self.SGasoline * 0.1, 350, 250, fill="deepskyblue", tags='price')
+        self.Oil_canvas.create_rectangle(450, 250 - self.SDisel * 0.1, 500, 250, fill="deepskyblue", tags='price')
+
+        # 주유소 회사 로고
+        if self.FCompany == '알뜰 주유소':
+            self.Oil_canvas.create_image(25, 25, anchor=NW, image=self.AD_oil_company, tags='price')
+        elif self.FCompany == 'SK 주유소':
+            self.Oil_canvas.create_image(25, 25, anchor=NW, image=self.SK_oil_company, tags='price')
+        elif self.FCompany == 'HD현대오일뱅크':
+            self.Oil_canvas.create_image(25, 25, anchor=NW, image=self.HD_oil_company, tags='price')
+        elif self.SCompany == 'S':
+            self.Oil_canvas.create_image(25, 25, anchor=NW, image=self.S_oil_company, tags='price')
+
+        if self.SCompany == '알뜰 주유소':
+            self.Oil_canvas.create_image(25, 175, anchor=NW, image=self.AD_oil_company, tags='price')
+        elif self.SCompany == 'SK 주유소':
+            self.Oil_canvas.create_image(25, 175, anchor=NW, image=self.SK_oil_company, tags='price')
+        elif self.SCompany == 'HD현대오일뱅크':
+            self.Oil_canvas.create_image(25, 175, anchor=NW, image=self.HD_oil_company, tags='price')
+        elif self.SCompany == 'S':
+            self.Oil_canvas.create_image(25, 175, anchor=NW, image=self.S_oil_company, tags='price')
+
+        # 휴게소 이름, 주유소 이름
+        self.Oil_canvas.create_text(85, 135, text=self.FRA + " " + self.FCompany, font=self.TempFont, tags='price')
+        self.Oil_canvas.create_text(85, 285, text=self.SRA + " " + self.SCompany, font=self.TempFont, tags='price')
 
         # 가격 표시
         self.Oil_canvas.create_text(275, y_base - self.FGasoline * scale - 15, text=int(self.FGasoline), font=self.TempFont, tags='price')
@@ -165,10 +201,21 @@ class OilPage(Frame):
         Frame.__init__(self, parent)
         self.controller = controller
 
+        # 이미지
         self.HomeImage = PhotoImage(file="image/홈 아이콘.png")
         self.OilImage = PhotoImage(file="image/주유소 아이콘.png")
         self.BookmarkImage = PhotoImage(file="image/즐겨찾기(빈 별).png")
+        self.AD_oil_company = PhotoImage(file="image/알뜰 주유소(98x100).png")
+        self.SK_oil_company = PhotoImage(file="image/SK(128x100).png")
+        self.HD_oil_company = PhotoImage(file="image/현대오일뱅크(200x68).png")
+        self.S_oil_company = PhotoImage(file="image/S-OIL(200x68).png")
+        self.MainImage = PhotoImage(file="image/쉼표 로고.png")
+
+        # 폰트
         self.TempFont = font.Font(self, size=10, family='긱블말랑이')
+
+        self.FRA = ""
+        self.SRA = ""
 
         # 1번 주유소
         self.FCompany = ""
