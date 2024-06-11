@@ -82,6 +82,8 @@ class Bookmark(Frame):
         BookmarkPageButton.pack()
         BookmarkPageButton.place(x=25, y=465)
 
+        self.serviceArea_name = ""
+
     def SetTextBox(self):
         self.text_box.destroy()
         self.text_box = Text(self, width=40, height=26)
@@ -105,7 +107,36 @@ class Bookmark(Frame):
         self.text_box.insert('end', '소형차 ' + str(info['small_parking']) + '\n',"default")
         self.text_box.insert('end', '대형차 ' + str(info['big_parking']) + '\n',"default")
 
+        self.setOilPrice()
+        self.text_box.insert('end', '4.주유소 가격' + '\n', "large")
+        self.text_box.insert('end', "주유소 회사: " + str(self.FCompany) + '\n', "default")
+        self.text_box.insert('end', '휘발유: ' + str(self.FGasoline) + '\n', "default")
+        self.text_box.insert('end', '경유: ' + str(self.FDisel), "default")
         self.text_box.config(state=DISABLED)
+
+    def setOilPrice(self):
+        selected_area = self.Bookmark.get().replace('휴게소', '')
+        print(selected_area)
+        Oilprice = xml.XmlReader.GasstationReader(selected_area)
+
+        self.FCompany = "주유소가 없습니다."
+        self.FGasoline = 0
+        self.FDisel = 0
+
+        for company, price in Oilprice.items():
+            prices = "{}: 디젤 - {}, 가솔린 - {}".format(company, price['disel'], price['gasoline'])
+            if company == 'AD':
+                self.FCompany = '알뜰 주유소'
+            elif company == 'SK':
+                self.FCompany = 'SK 주유소'
+            elif company == 'HD':
+                self.FCompany = 'HD현대오일뱅크'
+            else:
+                self.FCompany = company
+            self.FGasoline = price['gasoline']
+            self.FDisel = price['disel']
+            print(prices)
+
     def SetMap(self):
         self.map_widget.destroy()
         info = xml.XmlReader.serviceAreaInfoReader(self.Bookmark.get())
