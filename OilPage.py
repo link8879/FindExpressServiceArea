@@ -2,7 +2,7 @@ from tkinter import *
 import tkinter.ttk as ttk
 from tkinter import font
 import xmlReader as xml
-
+import spam
 
 class OilPage(Frame):
     def TopText(self):
@@ -198,6 +198,21 @@ class OilPage(Frame):
         TempFont = font.Font(self, size=20, weight='bold', family='긱블말랑이')
         self.Oil_canvas.create_text(300, 270, text="휘발유", font=TempFont)
         self.Oil_canvas.create_text(450, 270, text="경유", font=TempFont)
+        large = font.Font(self,size=18,weight='bold',family='긱블말랑이')
+        gasoline = spam.compare(float(self.FGasoline),float(self.SGasoline))
+        disel = spam.compare(float(self.FDisel),float(self.SDisel))
+
+        if gasoline == self.FGasoline:
+            self.Oil_canvas.create_text(275,330,text="휘발유는 "+self.SRA+"가 더 쌉니다.",font=large,tags='price')
+        else:
+            self.Oil_canvas.create_text(275,330,text="휘발유는 "+self.FRA+"가 더 쌉니다.",font=large,tags='price')
+
+        if disel == self.FDisel:
+            self.Oil_canvas.create_text(275,360,text="경유는 "+self.SRA+"가 더 쌉니다.",font=large,tags='price')
+        else:
+            self.Oil_canvas.create_text(275,360,text="경유는 "+self.FRA+"가 더 쌉니다.",font=large,tags='price')
+
+
 
     def __init__(self, parent, controller):
         Frame.__init__(self, parent)
@@ -232,7 +247,7 @@ class OilPage(Frame):
         self.First_restareas = []
         self.Second_restareas = []
 
-        self.Oil_canvas = Canvas(self, width=550, height=300, bg='white')
+        self.Oil_canvas = Canvas(self, width=550, height=400, bg='white')
         self.Oil_canvas.pack()
         self.Oil_canvas.place(x=200, y=185)
 
